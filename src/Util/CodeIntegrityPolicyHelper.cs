@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Win32;
 
@@ -8,6 +9,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 ///     Utility class for interaction with Code Integrity Policy settings.
 /// </summary>
 /// <remarks>https://www.geoffchappell.com/notes/security/whqlsettings/index.htm</remarks>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static class CodeIntegrityPolicyHelper
 {
     /// <summary>
@@ -20,7 +22,7 @@ public static class CodeIntegrityPolicyHelper
             int? value = (int?)Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CI\Policy",
                 "WhqlDeveloperTestMode", null);
 
-            return value.HasValue && value.Value > 0;
+            return value is > 0;
         }
 
         set => Registry.SetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CI\Policy",

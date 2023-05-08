@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 using PInvoke;
@@ -8,6 +9,8 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// <summary>
 ///     Utility class for receiving code integrity states currently enforced.
 /// </summary>
+/// <remarks>Source: https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/codeintegrity.htm</remarks>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static class CodeIntegrityHelper
 {
     /// <summary>
@@ -65,12 +68,13 @@ public static class CodeIntegrityHelper
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     private delegate int NtQuerySystemInformation(
-        uint SystemInformationClass,
-        IntPtr SystemInformation,
-        uint SystemInformationLength,
-        out uint ReturnLength);
+        uint systemInformationClass,
+        IntPtr systemInformation,
+        uint systemInformationLength,
+        out uint returnLength);
 
     [StructLayout(LayoutKind.Sequential)]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     private struct SYSTEM_CODEINTEGRITY_INFORMATION
     {
         public uint Length;

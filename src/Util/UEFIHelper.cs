@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 using Microsoft.Win32;
@@ -8,6 +9,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// <summary>
 ///     Utility to get UEFI details.
 /// </summary>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class UefiHelper
 {
     /// <summary>
@@ -17,7 +19,7 @@ public class UefiHelper
     {
         get
         {
-            int val = (int)Registry.GetValue(
+            int? val = (int?)Registry.GetValue(
                 @"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State",
                 "UEFISecureBootEnabled",
                 0);

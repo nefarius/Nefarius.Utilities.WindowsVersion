@@ -12,8 +12,10 @@ using Microsoft.Win32;
 //Thanks to Member 7861383, Scott Vickery for the Windows 8.1 update and workaround.
 //I have moved it to the beginning of the Name property, though...
 
-//Thakts to Brisingr Aerowing for help with the Windows 10 adapatation
+//Thakts to Brisingr Aerowing for help with the Windows 10 adaptation
 // Maintained and extended by Benjamin Höglinger-Stelzer 2018-2022
+
+// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2023
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
