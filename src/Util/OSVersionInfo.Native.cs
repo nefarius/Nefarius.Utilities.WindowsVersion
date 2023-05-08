@@ -30,12 +30,7 @@ public static partial class OsVersionInfo
     }
 
     #endregion OSVERSIONINFOEX
-
-    #region _PROCESSOR_INFO_UNION
-
-
-    #endregion _PROCESSOR_INFO_UNION
-
+    
     #region GET
 
     #region PRODUCT INFO
