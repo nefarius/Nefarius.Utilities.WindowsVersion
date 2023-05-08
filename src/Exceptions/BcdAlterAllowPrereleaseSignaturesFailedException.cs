@@ -1,24 +1,30 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace Nefarius.Utilities.WindowsVersion.Exceptions;
 
+/// <summary>
+///     Thrown on failure to change testsigning state.
+/// </summary>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class BcdAlterAllowPrereleaseSignaturesFailedException : Exception
 {
-    public BcdAlterAllowPrereleaseSignaturesFailedException()
+    /// <inheritdoc />
+    internal BcdAlterAllowPrereleaseSignaturesFailedException()
     {
     }
 
-    public BcdAlterAllowPrereleaseSignaturesFailedException(string message) : base(message)
+    internal BcdAlterAllowPrereleaseSignaturesFailedException(string message) : base(message)
     {
     }
 
-    public BcdAlterAllowPrereleaseSignaturesFailedException(string message, Exception innerException) : base(message,
+    internal BcdAlterAllowPrereleaseSignaturesFailedException(string message, Exception innerException) : base(message,
         innerException)
     {
     }
 
-    protected BcdAlterAllowPrereleaseSignaturesFailedException(SerializationInfo info, StreamingContext context) :
+    internal BcdAlterAllowPrereleaseSignaturesFailedException(SerializationInfo info, StreamingContext context) :
         base(info, context)
     {
     }
