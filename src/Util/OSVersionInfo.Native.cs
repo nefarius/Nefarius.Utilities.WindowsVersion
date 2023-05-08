@@ -31,12 +31,6 @@ public static partial class OsVersionInfo
 
     #endregion OSVERSIONINFOEX
 
-    #region SYSTEM_INFO
-
-    
-
-    #endregion SYSTEM_INFO
-
     #region _PROCESSOR_INFO_UNION
 
 
