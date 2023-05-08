@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="assets\NSS-128x128.png">
+    <None Include="..\assets\NSS-128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -25,8 +25,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="PInvoke.Kernel32" Version="0.7.104" />
-    <PackageReference Include="System.Management" Version="6.0.0" />
+    <PackageReference Include="PInvoke.Kernel32" Version="0.7.124" />
+    <PackageReference Include="System.Management" Version="7.0.1" />
   </ItemGroup>
 
 </Project>
