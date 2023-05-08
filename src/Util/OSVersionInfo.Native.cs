@@ -33,37 +33,12 @@ public static partial class OsVersionInfo
 
     #region SYSTEM_INFO
 
-    [StructLayout(LayoutKind.Sequential)]
-    private struct SYSTEM_INFO
-    {
-        internal readonly _PROCESSOR_INFO_UNION uProcessorInfo;
-        public readonly uint dwPageSize;
-        public readonly IntPtr lpMinimumApplicationAddress;
-        public readonly IntPtr lpMaximumApplicationAddress;
-        public readonly IntPtr dwActiveProcessorMask;
-        public readonly uint dwNumberOfProcessors;
-        public readonly uint dwProcessorType;
-        public readonly uint dwAllocationGranularity;
-        public readonly ushort dwProcessorLevel;
-        public readonly ushort dwProcessorRevision;
-    }
+    
 
     #endregion SYSTEM_INFO
 
     #region _PROCESSOR_INFO_UNION
 
-    [StructLayout(LayoutKind.Explicit)]
-    private struct _PROCESSOR_INFO_UNION
-    {
-        [FieldOffset(0)]
-        internal readonly uint dwOemId;
-
-        [FieldOffset(0)]
-        internal readonly ushort wProcessorArchitecture;
-
-        [FieldOffset(2)]
-        internal readonly ushort wReserved;
-    }
 
     #endregion _PROCESSOR_INFO_UNION
 
@@ -94,29 +69,9 @@ public static partial class OsVersionInfo
     private static extern int GetSystemMetrics(int nIndex);
 
     #endregion SYSTEMMETRICS
-
-    #region SYSTEMINFO
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetNativeSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
-
-    #endregion SYSTEMINFO
-
+    
     #endregion GET
-
-    #region 64 BIT OS DETECTION
-
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr LoadLibrary(string libraryName);
-
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr GetProcAddress(IntPtr hwnd, string procedureName);
-
-    #endregion 64 BIT OS DETECTION
-
+    
     #region PRODUCT
 
     private const int PRODUCT_UNDEFINED = 0x00000000;
