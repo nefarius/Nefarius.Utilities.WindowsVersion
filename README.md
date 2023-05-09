@@ -7,6 +7,21 @@
 
 Utility classes to get detailed Windows version and some extras like UEFI and BCD properties.
 
+## Features
+
+- Get detailed information about most (all?) known Windows versions and editions out there
+  - Service Pack (where it applies)
+  - Edition like Home, Professional etc. (where it applies)
+  - Server or client OS
+  - Release and Build numbers
+- Read and write Boot Configuration Data (BCD)
+  - Currently only querying or setting test-signing is implemented
+- UEFI information
+  - Query if the current system is running in UEFI or legacy mode
+  - Query whether SecureBoot is enabled or disabled
+- Check Code Integrity (CI) settings
+- ...and contributions welcome!
+
 ## Documentation
 
 [Link to API docs](docs/index.md).
