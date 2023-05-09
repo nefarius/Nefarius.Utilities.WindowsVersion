@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -677,9 +676,29 @@ public static partial class OsVersionInfo
     /// <summary>
     ///     Gets the build version number of the operating system running on this computer.
     /// </summary>
-    public static int BuildVersion =>
-        int.Parse((string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-            "CurrentBuildNumber", "0"));
+    public static int? BuildVersion
+    {
+        get
+        {
+            string value = (string)Registry.GetValue(
+                @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                "CurrentBuildNumber",
+                null
+            );
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            if (int.TryParse(value, out int result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+    }
 
     #endregion BUILD
 
