@@ -38,7 +38,7 @@ public static bool IsWindows10 { get; }
 
 **Remarks:**
 
-This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning policy.
+This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning strategy.
 
 ### **Edition**
 

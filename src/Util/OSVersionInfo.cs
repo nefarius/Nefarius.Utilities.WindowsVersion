@@ -73,7 +73,7 @@ public static partial class OsVersionInfo
     /// <summary>
     ///     True if the current system is Windows 10 or newer, false otherwise.
     /// </summary>
-    /// <remarks>This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning policy.</remarks>
+    /// <remarks>This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning strategy.</remarks>
     public static bool IsWindows10
     {
         get
