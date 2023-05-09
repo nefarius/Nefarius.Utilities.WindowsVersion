@@ -14,6 +14,7 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
   - Edition like Home, Professional etc. (where it applies)
   - Server or client OS
   - Release and Build numbers
+  - Whether the OS installation is fresh or grandfathered (in-place upgraded from an older version)
 - Read and write Boot Configuration Data (BCD)
   - Currently only querying or setting test-signing is implemented
 - UEFI information
