@@ -26,6 +26,8 @@ public static string ServicePack { get; }
 
 ### **IsWindows10**
 
+True if the current system is Windows 10 or newer, false otherwise.
+
 ```csharp
 public static bool IsWindows10 { get; }
 ```
@@ -33,6 +35,10 @@ public static bool IsWindows10 { get; }
 #### Property Value
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+
+**Remarks:**
+
+This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning policy.
 
 ### **Edition**
 

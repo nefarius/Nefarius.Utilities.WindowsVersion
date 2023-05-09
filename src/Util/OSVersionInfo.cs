@@ -70,11 +70,15 @@ public static partial class OsVersionInfo
 
     #region Windows 10/Server 2016+ Detection
 
+    /// <summary>
+    ///     True if the current system is Windows 10 or newer, false otherwise.
+    /// </summary>
+    /// <remarks>This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning policy.</remarks>
     public static bool IsWindows10
     {
         get
         {
-            string releaseId = (string)Registry.GetValue(
+            string? releaseId = (string?)Registry.GetValue(
                 @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion",
                 "ReleaseId", null);
 
