@@ -52,6 +52,18 @@ public static string Edition { get; }
 
 [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
 
+### **IsUacDisabled**
+
+Checks whether the UAC is turned off, which can lead to installation issues.
+
+```csharp
+public static bool IsUacDisabled { get; }
+```
+
+#### Property Value
+
+[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+
 ### **Name**
 
 Gets the name of the operating system running on this computer.
@@ -135,3 +147,15 @@ public static int RevisionVersion { get; }
 #### Property Value
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
+
+### **IsWindowsServer**
+
+True if Windows Server (any version) is detected, false otherwise.
+
+```csharp
+public static bool IsWindowsServer { get; }
+```
+
+#### Property Value
+
+[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
