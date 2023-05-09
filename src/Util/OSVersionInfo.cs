@@ -24,6 +24,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 ///     Provides detailed information about the host operating system.
 /// </summary>
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static partial class OsVersionInfo
 {
     /// <summary>
