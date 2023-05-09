@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -680,7 +681,7 @@ public static partial class OsVersionInfo
     {
         get
         {
-            string value = (string)Registry.GetValue(
+            string? value = (string?)Registry.GetValue(
                 @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
                 "CurrentBuildNumber",
                 null
@@ -718,7 +719,7 @@ public static partial class OsVersionInfo
     /// <summary>
     ///     Gets the full version of the operating system running on this computer.
     /// </summary>
-    public static Version Version => new(MajorVersion, MinorVersion, BuildVersion, RevisionVersion);
+    public static Version Version => new(MajorVersion, MinorVersion, BuildVersion ?? 0, RevisionVersion);
 
     #endregion VERSION
 
@@ -738,7 +739,7 @@ public static partial class OsVersionInfo
                 return 10;
             }
 
-            string exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            string? exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
                 "CurrentVersion", null) as string;
 
             if (string.IsNullOrEmpty(exactVersion))
@@ -746,7 +747,7 @@ public static partial class OsVersionInfo
                 return Environment.OSVersion.Version.Major;
             }
 
-            string[] splitVersion = exactVersion.Split('.');
+            string[] splitVersion = exactVersion!.Split('.');
             return int.Parse(splitVersion[0]);
         }
     }
@@ -767,7 +768,7 @@ public static partial class OsVersionInfo
                 return 0;
             }
 
-            string exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            string? exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
                 "CurrentVersion", null) as string;
 
             if (string.IsNullOrEmpty(exactVersion))
@@ -775,7 +776,7 @@ public static partial class OsVersionInfo
                 return Environment.OSVersion.Version.Minor;
             }
 
-            string[] splitVersion = exactVersion.Split('.');
+            string[] splitVersion = exactVersion!.Split('.');
             return int.Parse(splitVersion[1]);
         }
     }
