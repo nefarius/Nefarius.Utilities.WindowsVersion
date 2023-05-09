@@ -9,4 +9,14 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
 
 ## Documentation
 
-TBD
+[Link to API docs](docs/index.md).
+
+### Generating documentation
+
+- `dotnet build -c:Release`
+- `dotnet tool install -g XMLDoc2Markdown`
+- `xmldoc2md .\bin\netstandard2.0\Nefarius.Utilities.WindowsVersion.dll .\docs\`
+
+## Sources & 3rd party credits
+
+- [XMLDoc2Markdown](https://charlesdevandiere.github.io/xmldoc2md/)
