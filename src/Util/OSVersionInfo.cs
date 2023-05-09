@@ -32,7 +32,7 @@ public static partial class OsVersionInfo
     /// </summary>
     private static readonly List<string> Windows10ReleaseIds = new()
     {
-        "1507",
+        "1507", // <-- 1st public release of Windows 10 codenamed "Threshold 1"
         "1607",
         "1703",
         "1709",
@@ -41,7 +41,7 @@ public static partial class OsVersionInfo
         "1903",
         "1909",
         "2004",
-        "2009"
+        "2009" // <-- last time this value was actually updated by Microsoft
     };
 
     #region SERVICE PACK
