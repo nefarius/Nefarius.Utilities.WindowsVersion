@@ -423,15 +423,30 @@ public static partial class OsVersionInfo
 
                 #endregion VERSION 6
             }
-            
+
             return edition;
         }
     }
 
     #endregion EDITION
 
+    /// <summary>
+    ///     Checks whether the UAC is turned off, which can lead to installation issues.
+    /// </summary>
+    public static bool IsUacDisabled
+    {
+        get
+        {
+            using RegistryKey? key = Registry.LocalMachine.OpenSubKey(
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System");
+
+            return !int.TryParse(key?.GetValue("ConsentPromptBehaviorAdmin")?.ToString(), out int value) ||
+                   value != 5;
+        }
+    }
+
     #region NAME
-    
+
     private static string? ReleaseId => (string?)Registry.GetValue(
         @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion",
         "ReleaseId", null);
