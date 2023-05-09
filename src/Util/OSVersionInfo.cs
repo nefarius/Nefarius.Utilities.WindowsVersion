@@ -90,8 +90,6 @@ public static partial class OsVersionInfo
 
     #region EDITION
 
-    private static string _edition;
-
     /// <summary>
     ///     Gets the edition of the operating system running on this computer.
     /// </summary>
@@ -99,11 +97,6 @@ public static partial class OsVersionInfo
     {
         get
         {
-            if (_edition != null)
-            {
-                return _edition; //***** RETURN *****//
-            }
-
             string edition = string.Empty;
 
             OperatingSystem osVersion = Environment.OSVersion;
@@ -430,8 +423,7 @@ public static partial class OsVersionInfo
 
                 #endregion VERSION 6
             }
-
-            _edition = edition;
+            
             return edition;
         }
     }
@@ -439,10 +431,8 @@ public static partial class OsVersionInfo
     #endregion EDITION
 
     #region NAME
-
-    private static string _name;
-
-    private static string ReleaseId => (string)Registry.GetValue(
+    
+    private static string? ReleaseId => (string?)Registry.GetValue(
         @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion",
         "ReleaseId", null);
 
@@ -453,144 +443,140 @@ public static partial class OsVersionInfo
     {
         get
         {
-            if (_name != null)
-            {
-                return _name; //***** RETURN *****//
-            }
-
-            string name = "unknown";
+            string name = "Unknown";
 
             OperatingSystem osVersion = Environment.OSVersion;
             OSVERSIONINFOEX osVersionInfo = new() { dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX)) };
 
-            if (GetVersionEx(ref osVersionInfo))
+            if (!GetVersionEx(ref osVersionInfo))
             {
-                int majorVersion = osVersion.Version.Major;
-                int minorVersion = osVersion.Version.Minor;
+                return name;
+            }
 
-                // TODO: deprecate this. Use a proper manifest. Always.
-                if (majorVersion == 6 && minorVersion == 2)
+            int majorVersion = osVersion.Version.Major;
+            int minorVersion = osVersion.Version.Minor;
+
+            // TODO: deprecate this. Use a proper manifest. Always.
+            if (majorVersion == 6 && minorVersion == 2)
+            {
+                //The registry read workaround is by Scott Vickery. Thanks a lot for the help!
+
+                //http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
+
+                // For applications that have been manifested for Windows 8.1 & Windows 10. Applications not manifested for 8.1 or 10 will return the Windows 8 OS version value (6.2). 
+                // By reading the registry, we'll get the exact version - meaning we can even compare against  Win 8 and Win 8.1.
+                string? exactVersion =
+                    Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                        "CurrentVersion", null) as string;
+                if (!string.IsNullOrEmpty(exactVersion))
                 {
-                    //The registry read workaround is by Scott Vickery. Thanks a lot for the help!
-
-                    //http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
-
-                    // For applications that have been manifested for Windows 8.1 & Windows 10. Applications not manifested for 8.1 or 10 will return the Windows 8 OS version value (6.2). 
-                    // By reading the registry, we'll get the exact version - meaning we can even compare against  Win 8 and Win 8.1.
-                    string exactVersion =
-                        Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                            "CurrentVersion", null) as string;
-                    if (!string.IsNullOrEmpty(exactVersion))
-                    {
-                        string[] splitResult = exactVersion.Split('.');
-                        majorVersion = Convert.ToInt32(splitResult[0]);
-                        minorVersion = Convert.ToInt32(splitResult[1]);
-                    }
-
-                    if (IsWindows10)
-                    {
-                        majorVersion = 10;
-                        minorVersion = 0;
-                    }
+                    string[] splitResult = exactVersion!.Split('.');
+                    majorVersion = Convert.ToInt32(splitResult[0]);
+                    minorVersion = Convert.ToInt32(splitResult[1]);
                 }
 
-                switch (osVersion.Platform)
+                if (IsWindows10)
                 {
-                    case PlatformID.Win32S:
-                        name = "Windows 3.1";
-                        break;
-                    case PlatformID.WinCE:
-                        name = "Windows CE";
-                        break;
-                    case PlatformID.Win32Windows:
-                        {
-                            if (majorVersion == 4)
-                            {
-                                string csdVersion = osVersionInfo.szCSDVersion;
-                                switch (minorVersion)
-                                {
-                                    case 0:
-                                        if (csdVersion == "B" || csdVersion == "C")
-                                        {
-                                            name = "Windows 95 OSR2";
-                                        }
-                                        else
-                                        {
-                                            name = "Windows 95";
-                                        }
-
-                                        break;
-                                    case 10:
-                                        if (csdVersion == "A")
-                                        {
-                                            name = "Windows 98 Second Edition";
-                                        }
-                                        else
-                                        {
-                                            name = "Windows 98";
-                                        }
-
-                                        break;
-                                    case 90:
-                                        name = "Windows Me";
-                                        break;
-                                }
-                            }
-
-                            break;
-                        }
-                    case PlatformID.Win32NT:
-                        {
-                            byte productType = osVersionInfo.wProductType;
-
-                            switch (majorVersion)
-                            {
-                                case 3:
-                                    name = "Windows NT 3.51";
-                                    break;
-                                case 4:
-                                    switch (productType)
-                                    {
-                                        case 1:
-                                            name = "Windows NT 4.0";
-                                            break;
-                                        case 3:
-                                            name = "Windows NT 4.0 Server";
-                                            break;
-                                    }
-
-                                    break;
-                                case 5:
-                                    switch (minorVersion)
-                                    {
-                                        case 0:
-                                            name = "Windows 2000";
-                                            break;
-                                        case 1:
-                                            name = "Windows XP";
-                                            break;
-                                        case 2:
-                                            name = "Windows Server 2003";
-                                            break;
-                                    }
-
-                                    break;
-                                case 6:
-                                    name = ParseVistaThrough8(minorVersion, productType);
-
-                                    break;
-                                case 10:
-                                    name = ParseWindows10Version(minorVersion, productType, ReleaseId);
-
-                                    break;
-                            }
-
-                            break;
-                        }
+                    majorVersion = 10;
+                    minorVersion = 0;
                 }
             }
 
-            _name = name;
+            switch (osVersion.Platform)
+            {
+                case PlatformID.Win32S:
+                    name = "Windows 3.1";
+                    break;
+                case PlatformID.WinCE:
+                    name = "Windows CE";
+                    break;
+                case PlatformID.Win32Windows:
+                    {
+                        if (majorVersion == 4)
+                        {
+                            string csdVersion = osVersionInfo.szCSDVersion;
+                            switch (minorVersion)
+                            {
+                                case 0:
+                                    if (csdVersion == "B" || csdVersion == "C")
+                                    {
+                                        name = "Windows 95 OSR2";
+                                    }
+                                    else
+                                    {
+                                        name = "Windows 95";
+                                    }
+
+                                    break;
+                                case 10:
+                                    if (csdVersion == "A")
+                                    {
+                                        name = "Windows 98 Second Edition";
+                                    }
+                                    else
+                                    {
+                                        name = "Windows 98";
+                                    }
+
+                                    break;
+                                case 90:
+                                    name = "Windows Me";
+                                    break;
+                            }
+                        }
+
+                        break;
+                    }
+                case PlatformID.Win32NT:
+                    {
+                        byte productType = osVersionInfo.wProductType;
+
+                        switch (majorVersion)
+                        {
+                            case 3:
+                                name = "Windows NT 3.51";
+                                break;
+                            case 4:
+                                switch (productType)
+                                {
+                                    case 1:
+                                        name = "Windows NT 4.0";
+                                        break;
+                                    case 3:
+                                        name = "Windows NT 4.0 Server";
+                                        break;
+                                }
+
+                                break;
+                            case 5:
+                                switch (minorVersion)
+                                {
+                                    case 0:
+                                        name = "Windows 2000";
+                                        break;
+                                    case 1:
+                                        name = "Windows XP";
+                                        break;
+                                    case 2:
+                                        name = "Windows Server 2003";
+                                        break;
+                                }
+
+                                break;
+                            case 6:
+                                name = ParseVistaThrough8(minorVersion, productType);
+
+                                break;
+                            case 10:
+                                name = ParseWindows10Version(minorVersion, productType, ReleaseId);
+
+                                break;
+                        }
+
+                        break;
+                    }
+            }
+
             return name;
         }
     }
