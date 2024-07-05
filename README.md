@@ -39,3 +39,5 @@ xmldoc2md .\bin\netstandard2.0\Nefarius.Utilities.WindowsVersion.dll .\docs\
 - [XMLDoc2Markdown](https://charlesdevandiere.github.io/xmldoc2md/)
 - [Getting Operating System Version Info - Even for Windows 10!](https://www.codeproject.com/Articles/73000/Getting-Operating-System-Version-Info-Even-for-Win)
 - [List of Microsoft Windows versions](https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions)
+- [Geoff Chappell - BCD Elements](https://geoffchappell.com/notes/windows/boot/bcd/elements.htm)
+- [How distinguish when Windows was installed in Legacy BIOS or UEFI mode using Delphi?](https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/)

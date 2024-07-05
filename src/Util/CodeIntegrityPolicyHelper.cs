@@ -15,6 +15,7 @@ public static class CodeIntegrityPolicyHelper
     /// <summary>
     ///     Gets or sets whether the kernel allows loading of "traditional" cross-signed drivers.
     /// </summary>
+    /// <remarks>Availability of this functionality heavily depends on the Windows build used.</remarks>
     public static bool WhqlDeveloperTestMode
     {
         get

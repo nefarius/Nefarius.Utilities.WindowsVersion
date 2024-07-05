@@ -16,7 +16,7 @@ using Microsoft.Win32;
 //Thakts to Brisingr Aerowing for help with the Windows 10 adaptation
 // Maintained and extended by Benjamin Höglinger-Stelzer 2018-2022
 
-// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2023
+// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2024
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
