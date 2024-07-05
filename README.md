@@ -27,10 +27,14 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
 
 ### Generating documentation
 
-- `dotnet build -c:Release`
-- `dotnet tool install -g XMLDoc2Markdown`
-- `xmldoc2md .\bin\netstandard2.0\Nefarius.Utilities.WindowsVersion.dll .\docs\`
+```PowerShell
+dotnet build -c:Release
+dotnet tool install --global Nefarius.Tools.XMLDoc2Markdown
+xmldoc2md .\bin\netstandard2.0\Nefarius.Utilities.WindowsVersion.dll .\docs\
+```
 
 ## Sources & 3rd party credits
 
 - [XMLDoc2Markdown](https://charlesdevandiere.github.io/xmldoc2md/)
+- [Getting Operating System Version Info - Even for Windows 10!](https://www.codeproject.com/Articles/73000/Getting-Operating-System-Version-Info-Even-for-Win)
+- [List of Microsoft Windows versions](https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions)

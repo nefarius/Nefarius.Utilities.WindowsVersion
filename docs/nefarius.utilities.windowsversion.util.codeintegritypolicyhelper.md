@@ -16,7 +16,7 @@ https://www.geoffchappell.com/notes/security/whqlsettings/index.htm
 
 ## Properties
 
-### **WhqlDeveloperTestMode**
+### <a id="properties-whqldevelopertestmode"/>**WhqlDeveloperTestMode**
 
 Gets or sets whether the kernel allows loading of "traditional" cross-signed drivers.
 

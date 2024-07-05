@@ -16,7 +16,7 @@ Source: https://stackoverflow.com/a/54539366/490629
 
 ## Properties
 
-### **IsArm64**
+### <a id="properties-isarm64"/>**IsArm64**
 
 Gets whether the current process is running on ARM64.
 
@@ -28,19 +28,7 @@ public static bool IsArm64 { get; }
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
 
-### **ProgramBits**
-
-Determines if the current application is 32 or 64-bit.
-
-```csharp
-public static SoftwareArchitecture ProgramBits { get; }
-```
-
-#### Property Value
-
-[SoftwareArchitecture](./nefarius.utilities.windowsversion.util.softwarearchitecture.md)<br>
-
-### **OsBits**
+### <a id="properties-osbits"/>**OsBits**
 
 Determines if the current operating system is 32 or 64-bit.
 
@@ -52,7 +40,7 @@ public static SoftwareArchitecture OsBits { get; }
 
 [SoftwareArchitecture](./nefarius.utilities.windowsversion.util.softwarearchitecture.md)<br>
 
-### **ProcessorBits**
+### <a id="properties-processorbits"/>**ProcessorBits**
 
 Determines if the current processor is 32 or 64-bit.
 
@@ -63,3 +51,15 @@ public static ProcessorArchitecture ProcessorBits { get; }
 #### Property Value
 
 [ProcessorArchitecture](./nefarius.utilities.windowsversion.util.processorarchitecture.md)<br>
+
+### <a id="properties-programbits"/>**ProgramBits**
+
+Determines if the current application is 32 or 64-bit.
+
+```csharp
+public static SoftwareArchitecture ProgramBits { get; }
+```
+
+#### Property Value
+
+[SoftwareArchitecture](./nefarius.utilities.windowsversion.util.softwarearchitecture.md)<br>

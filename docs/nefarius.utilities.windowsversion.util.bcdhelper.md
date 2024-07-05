@@ -16,7 +16,7 @@ Source: https://geoffchappell.com/notes/windows/boot/bcd/elements.htm
 
 ## Properties
 
-### **AllowPrereleaseSignatures**
+### <a id="properties-allowprereleasesignatures"/>**AllowPrereleaseSignatures**
 
 Gets or sets the current value of BCDE_LIBRARY_TYPE_ALLOW_PRERELEASE_SIGNATURES from the default boot entry.
 

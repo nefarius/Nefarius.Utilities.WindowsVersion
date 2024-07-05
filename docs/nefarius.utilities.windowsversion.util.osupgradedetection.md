@@ -16,7 +16,7 @@ https://superuser.com/a/1184670
 
 ## Properties
 
-### **IsGrandfathered**
+### <a id="properties-isgrandfathered"/>**IsGrandfathered**
 
 Gets whether the system has been in-place upgraded.
 
@@ -30,7 +30,7 @@ public static bool IsGrandfathered { get; }
 
 ## Constructors
 
-### **OsUpgradeDetection()**
+### <a id="constructors-.ctor"/>**OsUpgradeDetection()**
 
 ```csharp
 public OsUpgradeDetection()

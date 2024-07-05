@@ -12,19 +12,7 @@ Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) 
 
 ## Properties
 
-### **IsSecureBootEnabled**
-
-Checks if Secure Boot is enabled.
-
-```csharp
-public static bool IsSecureBootEnabled { get; }
-```
-
-#### Property Value
-
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
-
-### **IsRunningInUefiMode**
+### <a id="properties-isrunninginuefimode"/>**IsRunningInUefiMode**
 
 Checks if the current system is running in UEFI or Legacy BIOS mode.
 
@@ -40,9 +28,21 @@ public static bool IsRunningInUefiMode { get; }
 
 https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
 
+### <a id="properties-issecurebootenabled"/>**IsSecureBootEnabled**
+
+Checks if Secure Boot is enabled.
+
+```csharp
+public static bool IsSecureBootEnabled { get; }
+```
+
+#### Property Value
+
+[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+
 ## Constructors
 
-### **UefiHelper()**
+### <a id="constructors-.ctor"/>**UefiHelper()**
 
 ```csharp
 public UefiHelper()
