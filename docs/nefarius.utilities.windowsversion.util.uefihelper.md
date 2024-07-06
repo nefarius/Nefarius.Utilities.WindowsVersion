@@ -5,7 +5,7 @@ Namespace: Nefarius.Utilities.WindowsVersion.Util
 Utility to get UEFI details.
 
 ```csharp
-public class UefiHelper
+public static class UefiHelper
 ```
 
 Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [UefiHelper](./nefarius.utilities.windowsversion.util.uefihelper.md)
@@ -26,7 +26,7 @@ public static bool IsRunningInUefiMode { get; }
 
 **Remarks:**
 
-https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
+Source: https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
 
 ### <a id="properties-issecurebootenabled"/>**IsSecureBootEnabled**
 
@@ -39,11 +39,3 @@ public static bool IsSecureBootEnabled { get; }
 #### Property Value
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
-
-## Constructors
-
-### <a id="constructors-.ctor"/>**UefiHelper()**
-
-```csharp
-public UefiHelper()
-```

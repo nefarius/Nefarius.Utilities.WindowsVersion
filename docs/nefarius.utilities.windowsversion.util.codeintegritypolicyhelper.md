@@ -12,7 +12,7 @@ Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) 
 
 **Remarks:**
 
-https://www.geoffchappell.com/notes/security/whqlsettings/index.htm
+Source: https://www.geoffchappell.com/notes/security/whqlsettings/index.htm
 
 ## Properties
 
