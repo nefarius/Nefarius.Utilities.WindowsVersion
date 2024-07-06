@@ -35,8 +35,8 @@ public static class BcdHelper
             ManagementBaseObject inParams = bootMgrObj.GetMethodParameters("GetElement");
 
             inParams["Type"] = BcdLibraryBoolean_AllowPrereleaseSignatures;
-            ManagementBaseObject outParams = bootMgrObj.InvokeMethod("GetElement", inParams, null);
-            ManagementBaseObject? outObj = (ManagementBaseObject)outParams!?.Properties["Element"].Value;
+            ManagementBaseObject? outParams = bootMgrObj.InvokeMethod("GetElement", inParams, null);
+            ManagementBaseObject? outObj = (ManagementBaseObject?)outParams?.Properties["Element"].Value;
 
             bool allowPrereleaseSignatures = outObj != null && (bool)outObj.GetPropertyValue("Boolean");
 
@@ -58,8 +58,8 @@ public static class BcdHelper
 
             inParams["Type"] = BcdLibraryBoolean_AllowPrereleaseSignatures;
             inParams["Boolean"] = value;
-            ManagementBaseObject outParams = bootMgrObj.InvokeMethod("SetBooleanElement", inParams, null);
-            object ret = outParams?.Properties["ReturnValue"].Value;
+            ManagementBaseObject? outParams = bootMgrObj.InvokeMethod("SetBooleanElement", inParams, null);
+            object? ret = outParams?.Properties["ReturnValue"].Value;
             bool returnValue = ret != null && (bool)ret;
 
             if (!returnValue)

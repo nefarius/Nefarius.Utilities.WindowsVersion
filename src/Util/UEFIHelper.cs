@@ -10,7 +10,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 ///     Utility to get UEFI details.
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-public class UefiHelper
+public static class UefiHelper
 {
     /// <summary>
     ///     Checks if Secure Boot is enabled.
@@ -31,7 +31,7 @@ public class UefiHelper
     /// <summary>
     ///     Checks if the current system is running in UEFI or Legacy BIOS mode.
     /// </summary>
-    /// <remarks>https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/</remarks>
+    /// <remarks>Source: https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/</remarks>
     public static bool IsRunningInUefiMode
     {
         get
