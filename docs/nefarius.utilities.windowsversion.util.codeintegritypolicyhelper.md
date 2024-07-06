@@ -27,3 +27,7 @@ public static bool WhqlDeveloperTestMode { get; set; }
 #### Property Value
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+
+**Remarks:**
+
+Availability of this functionality heavily depends on the Windows build used.

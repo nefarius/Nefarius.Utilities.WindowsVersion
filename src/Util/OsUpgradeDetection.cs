@@ -9,9 +9,9 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// <summary>
 ///     Utilities to detect if this system is a fresh or upgraded installation.
 /// </summary>
-/// <remarks>https://superuser.com/a/1184670</remarks>
+/// <remarks>Source: https://superuser.com/a/1184670</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-public class OsUpgradeDetection
+public static class OsUpgradeDetection
 {
     /// <summary>
     ///     Gets whether the system has been in-place upgraded.
