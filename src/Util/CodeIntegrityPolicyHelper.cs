@@ -8,7 +8,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// <summary>
 ///     Utility class for interaction with Code Integrity Policy settings.
 /// </summary>
-/// <remarks>https://www.geoffchappell.com/notes/security/whqlsettings/index.htm</remarks>
+/// <remarks>Source: https://www.geoffchappell.com/notes/security/whqlsettings/index.htm</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static class CodeIntegrityPolicyHelper
 {
