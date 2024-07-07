@@ -1,0 +1,3 @@
+GetProcAddress
+GetModuleHandle
+WIN32_ERROR
