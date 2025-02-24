@@ -17,7 +17,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"/>
         <PackageReference Include="PInvoke.Kernel32" Version="0.7.124"/>
-        <PackageReference Include="System.Management" Version="9.0.1"/>
+        <PackageReference Include="System.Management" Version="9.0.2"/>
         <PackageReference Include="MinVer" Version="6.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
