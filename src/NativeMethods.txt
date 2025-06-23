@@ -4,3 +4,5 @@ WIN32_ERROR
 LoadLibrary
 GetNativeSystemInfo
 IsWow64Process2
+GetFirmwareEnvironmentVariable
+IsOS
