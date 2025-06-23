@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
+using JetBrains.Annotations;
+
 using Microsoft.Win32;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
@@ -10,6 +12,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// </summary>
 /// <remarks>Source: https://www.geoffchappell.com/notes/security/whqlsettings/index.htm</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[UsedImplicitly]
 public static class CodeIntegrityPolicyHelper
 {
     /// <summary>

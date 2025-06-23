@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Management;
 
+using JetBrains.Annotations;
+
 using Nefarius.Utilities.WindowsVersion.Exceptions;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
@@ -12,6 +14,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// <remarks>Source: https://geoffchappell.com/notes/windows/boot/bcd/elements.htm</remarks>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[UsedImplicitly]
 public static class BcdHelper
 {
     private const uint BcdLibraryBoolean_AllowPrereleaseSignatures = 0x16000049;

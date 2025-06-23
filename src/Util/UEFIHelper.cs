@@ -1,6 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+
+using Windows.Win32;
+
+using JetBrains.Annotations;
 
 using Microsoft.Win32;
 
@@ -10,6 +13,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 ///     Utility to get UEFI details.
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[UsedImplicitly]
 public static class UefiHelper
 {
     /// <summary>
@@ -31,28 +35,24 @@ public static class UefiHelper
     /// <summary>
     ///     Checks if the current system is running in UEFI or Legacy BIOS mode.
     /// </summary>
-    /// <remarks>Source: https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/</remarks>
-    public static bool IsRunningInUefiMode
+    /// <remarks>
+    ///     Source:
+    ///     https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
+    /// </remarks>
+    public static unsafe bool IsRunningInUefiMode
     {
         get
         {
             // The arguments submitted are dummy values; GetLastError will
             // report ERROR_INVALID_FUNCTION on Legacy BIOS systems.
-            GetFirmwareEnvironmentVariable(
+            PInvoke.GetFirmwareEnvironmentVariable(
                 string.Empty,
                 "{00000000-0000-0000-0000-000000000000}",
-                IntPtr.Zero, 0);
+                null,
+                0
+            );
 
             return Marshal.GetLastWin32Error() != 0x01; // ERROR_INVALID_FUNCTION
         }
     }
-
-    #region Native
-
-    [DllImport("kernel32.dll", EntryPoint = "GetFirmwareEnvironmentVariableW", SetLastError = true,
-        CharSet = CharSet.Unicode, ExactSpelling = true)]
-    private static extern uint GetFirmwareEnvironmentVariable(string lpName, string lpGuid, IntPtr pBuffer,
-        uint nSize);
-
-    #endregion
 }

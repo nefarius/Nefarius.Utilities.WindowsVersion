@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-using PInvoke;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
@@ -24,9 +26,8 @@ public static class CodeIntegrityHelper
 
             try
             {
-                IntPtr fptr = Kernel32.GetProcAddress(
-                    new Kernel32.SafeLibraryHandle(Kernel32.GetModuleHandle("ntdll.dll")),
-                    "NtQuerySystemInformation");
+                using FreeLibrarySafeHandle ntDll = PInvoke.GetModuleHandle("ntdll.dll");
+                FARPROC fptr = PInvoke.GetProcAddress(ntDll, "NtQuerySystemInformation");
 
                 NtQuerySystemInformation ntQuerySystemInformation =
                     Marshal.GetDelegateForFunctionPointer<NtQuerySystemInformation>(fptr);
@@ -45,12 +46,11 @@ public static class CodeIntegrityHelper
                     out _
                 );
 
-                Win32ErrorCode error = Kernel32.GetLastError();
+                int error = Marshal.GetLastWin32Error();
 
                 if (status != 0)
                 {
-                    throw new Win32Exception(Kernel32.GetLastError(),
-                        "NtQuerySystemInformation failed");
+                    throw new Win32Exception(error, "NtQuerySystemInformation failed");
                 }
 
                 integrity = Marshal.PtrToStructure<SYSTEM_CODEINTEGRITY_INFORMATION>(pIntegrity);

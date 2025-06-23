@@ -2,10 +2,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
+using JetBrains.Annotations;
+
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
+[UsedImplicitly]
 public static partial class OsVersionInfo
 {
     #region OSVERSIONINFOEX

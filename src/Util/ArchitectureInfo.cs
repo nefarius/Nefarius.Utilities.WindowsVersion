@@ -3,6 +3,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
+using Windows.Win32;
+using Windows.Win32.System.SystemInformation;
+
+using JetBrains.Annotations;
+
+using Microsoft.Win32.SafeHandles;
+
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
 /// <summary>
@@ -57,19 +64,21 @@ public enum ProcessorArchitecture
 /// </summary>
 /// <remarks>Source: https://stackoverflow.com/a/54539366/490629</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[UsedImplicitly]
 public static class ArchitectureInfo
 {
     /// <summary>
     ///     Gets whether the current process is running on ARM64.
     /// </summary>
-    public static bool IsArm64
+    public static unsafe bool IsArm64
     {
         get
         {
-            IntPtr handle = Process.GetCurrentProcess().Handle;
-            IsWow64Process2(handle, out ushort _, out ushort nativeMachine);
+            SafeProcessHandle handle = Process.GetCurrentProcess().SafeHandle;
+            IMAGE_FILE_MACHINE nativeMachine;
+            PInvoke.IsWow64Process2(handle, out _, &nativeMachine);
 
-            return nativeMachine == 0xaa64;
+            return nativeMachine == IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_ARM64;
         }
     }
 
@@ -120,58 +129,38 @@ public static class ArchitectureInfo
 
             try
             {
-                SYSTEM_INFO systemInfo = new();
-                GetNativeSystemInfo(ref systemInfo);
+                PInvoke.GetNativeSystemInfo(out SYSTEM_INFO systemInfo);
 
-                pBits = systemInfo.uProcessorInfo.wProcessorArchitecture switch
+                pBits = systemInfo.Anonymous.Anonymous.wProcessorArchitecture switch
                 {
-                    9 => // PROCESSOR_ARCHITECTURE_AMD64
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_AMD64 =>
                         ProcessorArchitecture.Bit64,
-                    6 => // PROCESSOR_ARCHITECTURE_IA64
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_IA64 =>
                         ProcessorArchitecture.Itanium64,
-                    0 => // PROCESSOR_ARCHITECTURE_INTEL
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_INTEL =>
                         ProcessorArchitecture.Bit32,
                     _ => ProcessorArchitecture.Unknown
                 };
             }
             catch
             {
-                // Ignore        
+                // Ignore
             }
 
             return pBits;
         }
     }
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool IsWow64Process2(
-        IntPtr process,
-        out ushort processMachine,
-        out ushort nativeMachine
-    );
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetNativeSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
-
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr LoadLibrary(string libraryName);
-
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr GetProcAddress(IntPtr hWnd, string procedureName);
-
     private static IsWow64ProcessDelegate GetIsWow64ProcessDelegate()
     {
-        IntPtr handle = LoadLibrary("kernel32");
+        FreeLibrarySafeHandle handle = PInvoke.LoadLibrary("kernel32");
 
-        if (handle == IntPtr.Zero)
+        if (handle.IsInvalid)
         {
             return null;
         }
 
-        IntPtr fnPtr = GetProcAddress(handle, "IsWow64Process");
+        IntPtr fnPtr = PInvoke.GetProcAddress(handle, "IsWow64Process");
 
         if (fnPtr != IntPtr.Zero)
         {
@@ -194,39 +183,6 @@ public static class ArchitectureInfo
         bool retVal = fnDelegate.Invoke(Process.GetCurrentProcess().Handle, out bool isWow64);
 
         return retVal && isWow64;
-    }
-
-
-    [StructLayout(LayoutKind.Explicit)]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    private struct _PROCESSOR_INFO_UNION
-    {
-        [FieldOffset(0)]
-        internal readonly uint dwOemId;
-
-        [FieldOffset(0)]
-        internal readonly ushort wProcessorArchitecture;
-
-        [FieldOffset(2)]
-        internal readonly ushort wReserved;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    private struct SYSTEM_INFO
-    {
-        internal readonly _PROCESSOR_INFO_UNION uProcessorInfo;
-        public readonly uint dwPageSize;
-        public readonly IntPtr lpMinimumApplicationAddress;
-        public readonly IntPtr lpMaximumApplicationAddress;
-        public readonly IntPtr dwActiveProcessorMask;
-        public readonly uint dwNumberOfProcessors;
-        public readonly uint dwProcessorType;
-        public readonly uint dwAllocationGranularity;
-        public readonly ushort dwProcessorLevel;
-        public readonly ushort dwProcessorRevision;
     }
 
     private delegate bool IsWow64ProcessDelegate([In] IntPtr handle, [Out] out bool isWow64Process);
