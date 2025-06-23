@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 using Windows.Win32;
 
+using JetBrains.Annotations;
+
 using Microsoft.Win32;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
@@ -11,6 +13,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 ///     Utility to get UEFI details.
 /// </summary>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[UsedImplicitly]
 public static class UefiHelper
 {
     /// <summary>

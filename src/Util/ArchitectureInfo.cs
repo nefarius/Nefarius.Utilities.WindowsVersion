@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.System.SystemInformation;
 
+using JetBrains.Annotations;
+
 using Microsoft.Win32.SafeHandles;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
@@ -62,7 +64,7 @@ public enum ProcessorArchitecture
 /// </summary>
 /// <remarks>Source: https://stackoverflow.com/a/54539366/490629</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
+[UsedImplicitly]
 public static class ArchitectureInfo
 {
     /// <summary>
