@@ -26,7 +26,8 @@ public static bool IsRunningInUefiMode { get; }
 
 **Remarks:**
 
-Source: https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
+Source:
+ https://theroadtodelphi.com/2013/02/19/how-distinguish-when-windows-was-installed-in-legacy-bios-or-uefi-mode-using-delphi/
 
 ### <a id="properties-issecurebootenabled"/>**IsSecureBootEnabled**
 
