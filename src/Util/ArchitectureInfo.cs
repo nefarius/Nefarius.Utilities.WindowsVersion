@@ -127,31 +127,27 @@ public static class ArchitectureInfo
 
             try
             {
-                SYSTEM_INFO systemInfo = new();
-                GetNativeSystemInfo(ref systemInfo);
+                PInvoke.GetNativeSystemInfo(out SYSTEM_INFO systemInfo);
 
-                pBits = systemInfo.uProcessorInfo.wProcessorArchitecture switch
+                pBits = systemInfo.Anonymous.Anonymous.wProcessorArchitecture switch
                 {
-                    9 => // PROCESSOR_ARCHITECTURE_AMD64
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_AMD64 =>
                         ProcessorArchitecture.Bit64,
-                    6 => // PROCESSOR_ARCHITECTURE_IA64
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_IA64 =>
                         ProcessorArchitecture.Itanium64,
-                    0 => // PROCESSOR_ARCHITECTURE_INTEL
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_INTEL =>
                         ProcessorArchitecture.Bit32,
                     _ => ProcessorArchitecture.Unknown
                 };
             }
             catch
             {
-                // Ignore        
+                // Ignore
             }
 
             return pBits;
         }
     }
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetNativeSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
 
     private static IsWow64ProcessDelegate GetIsWow64ProcessDelegate()
     {
@@ -185,38 +181,6 @@ public static class ArchitectureInfo
         bool retVal = fnDelegate.Invoke(Process.GetCurrentProcess().Handle, out bool isWow64);
 
         return retVal && isWow64;
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    private struct _PROCESSOR_INFO_UNION
-    {
-        [FieldOffset(0)]
-        internal readonly uint dwOemId;
-
-        [FieldOffset(0)]
-        internal readonly ushort wProcessorArchitecture;
-
-        [FieldOffset(2)]
-        internal readonly ushort wReserved;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    private struct SYSTEM_INFO
-    {
-        internal readonly _PROCESSOR_INFO_UNION uProcessorInfo;
-        public readonly uint dwPageSize;
-        public readonly IntPtr lpMinimumApplicationAddress;
-        public readonly IntPtr lpMaximumApplicationAddress;
-        public readonly IntPtr dwActiveProcessorMask;
-        public readonly uint dwNumberOfProcessors;
-        public readonly uint dwProcessorType;
-        public readonly uint dwAllocationGranularity;
-        public readonly ushort dwProcessorLevel;
-        public readonly ushort dwProcessorRevision;
     }
 
     private delegate bool IsWow64ProcessDelegate([In] IntPtr handle, [Out] out bool isWow64Process);
