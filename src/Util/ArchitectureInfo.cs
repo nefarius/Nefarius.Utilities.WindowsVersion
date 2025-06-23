@@ -57,6 +57,7 @@ public enum ProcessorArchitecture
 /// </summary>
 /// <remarks>Source: https://stackoverflow.com/a/54539366/490629</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ArchitectureInfo
 {
     /// <summary>
