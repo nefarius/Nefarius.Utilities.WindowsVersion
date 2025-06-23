@@ -3,6 +3,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
+using Windows.Win32;
+using Windows.Win32.System.SystemInformation;
+
+using Microsoft.Win32.SafeHandles;
+
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
 /// <summary>
@@ -63,14 +68,15 @@ public static class ArchitectureInfo
     /// <summary>
     ///     Gets whether the current process is running on ARM64.
     /// </summary>
-    public static bool IsArm64
+    public static unsafe bool IsArm64
     {
         get
         {
-            IntPtr handle = Process.GetCurrentProcess().Handle;
-            IsWow64Process2(handle, out ushort _, out ushort nativeMachine);
+            SafeProcessHandle handle = Process.GetCurrentProcess().SafeHandle;
+            IMAGE_FILE_MACHINE nativeMachine;
+            PInvoke.IsWow64Process2(handle, out _, &nativeMachine);
 
-            return nativeMachine == 0xaa64;
+            return nativeMachine == IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_ARM64;
         }
     }
 
@@ -143,16 +149,6 @@ public static class ArchitectureInfo
             return pBits;
         }
     }
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool IsWow64Process2(
-        IntPtr process,
-        out ushort processMachine,
-        out ushort nativeMachine
-    );
-
-    [DllImport("kernel32.dll")]
-    private static extern void GetSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
 
     [DllImport("kernel32.dll")]
     private static extern void GetNativeSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
