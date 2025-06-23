@@ -153,22 +153,16 @@ public static class ArchitectureInfo
     [DllImport("kernel32.dll")]
     private static extern void GetNativeSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
 
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr LoadLibrary(string libraryName);
-
-    [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-    private static extern IntPtr GetProcAddress(IntPtr hWnd, string procedureName);
-
     private static IsWow64ProcessDelegate GetIsWow64ProcessDelegate()
     {
-        IntPtr handle = LoadLibrary("kernel32");
+        FreeLibrarySafeHandle handle = PInvoke.LoadLibrary("kernel32");
 
-        if (handle == IntPtr.Zero)
+        if (handle.IsInvalid)
         {
             return null;
         }
 
-        IntPtr fnPtr = GetProcAddress(handle, "IsWow64Process");
+        IntPtr fnPtr = PInvoke.GetProcAddress(handle, "IsWow64Process");
 
         if (fnPtr != IntPtr.Zero)
         {
@@ -192,7 +186,6 @@ public static class ArchitectureInfo
 
         return retVal && isWow64;
     }
-
 
     [StructLayout(LayoutKind.Explicit)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
