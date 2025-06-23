@@ -1,4 +1,5 @@
 ﻿#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,7 +17,7 @@ using Microsoft.Win32;
 //Thakts to Brisingr Aerowing for help with the Windows 10 adaptation
 // Maintained and extended by Benjamin Höglinger-Stelzer 2018-2022
 
-// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2024
+// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2025
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
@@ -25,13 +26,14 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// </summary>
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class OsVersionInfo
 {
     /// <summary>
     ///     https://en.wikipedia.org/wiki/Windows_10_version_history#Channels
     /// </summary>
-    private static readonly List<string> Windows10ReleaseIds = new()
-    {
+    private static readonly List<string> Windows10ReleaseIds =
+    [
         "1507", // <-- 1st public release of Windows 10 codenamed "Threshold 1"
         "1607",
         "1703",
@@ -42,7 +44,7 @@ public static partial class OsVersionInfo
         "1909",
         "2004",
         "2009" // <-- last time this value was actually updated by Microsoft
-    };
+    ];
 
     #region SERVICE PACK
 

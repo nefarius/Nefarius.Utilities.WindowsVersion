@@ -11,6 +11,7 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 /// </summary>
 /// <remarks>Source: https://superuser.com/a/1184670</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class OsUpgradeDetection
 {
     /// <summary>
