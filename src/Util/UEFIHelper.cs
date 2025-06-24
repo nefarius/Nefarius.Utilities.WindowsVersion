@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 
 using Windows.Win32;
+using Windows.Win32.Foundation;
 
 using JetBrains.Annotations;
 
@@ -52,7 +53,7 @@ public static class UefiHelper
                 0
             );
 
-            return Marshal.GetLastWin32Error() != 0x01; // ERROR_INVALID_FUNCTION
+            return Marshal.GetLastWin32Error() != (int)WIN32_ERROR.ERROR_INVALID_FUNCTION;
         }
     }
 }
