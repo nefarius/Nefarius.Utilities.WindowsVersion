@@ -27,10 +27,10 @@ public static class CodeIntegrityHelper
             try
             {
                 using FreeLibrarySafeHandle ntDll = PInvoke.GetModuleHandle("ntdll.dll");
-                FARPROC fptr = PInvoke.GetProcAddress(ntDll, "NtQuerySystemInformation");
+                FARPROC ptr = PInvoke.GetProcAddress(ntDll, "NtQuerySystemInformation");
 
                 NtQuerySystemInformation ntQuerySystemInformation =
-                    Marshal.GetDelegateForFunctionPointer<NtQuerySystemInformation>(fptr);
+                    Marshal.GetDelegateForFunctionPointer<NtQuerySystemInformation>(ptr);
 
                 SYSTEM_CODEINTEGRITY_INFORMATION integrity;
                 integrity.Length = (uint)Marshal.SizeOf<SYSTEM_CODEINTEGRITY_INFORMATION>();
@@ -48,7 +48,7 @@ public static class CodeIntegrityHelper
 
                 int error = Marshal.GetLastWin32Error();
 
-                if (status != 0)
+                if (status != (int)WIN32_ERROR.ERROR_SUCCESS)
                 {
                     throw new Win32Exception(error, "NtQuerySystemInformation failed");
                 }
