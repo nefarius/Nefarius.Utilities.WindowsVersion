@@ -5,7 +5,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.0</Version>
         <PackageIcon>NSS-128x128.png</PackageIcon>
-        <PackageIconUrl/>
+        <PackageIconUrl />
         <RepositoryUrl>https://github.com/nefarius/Nefarius.Utilities.WindowsVersion</RepositoryUrl>
         <PackageProjectUrl>https://github.com/nefarius/Nefarius.Utilities.WindowsVersion</PackageProjectUrl>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -16,8 +16,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
         <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.198">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
