@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" PrivateAssets="All" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
         <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.202">
           <PrivateAssets>all</PrivateAssets>
