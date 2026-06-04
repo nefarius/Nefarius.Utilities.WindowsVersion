@@ -8,7 +8,7 @@ Utility class for receiving code integrity states currently enforced.
 public static class CodeIntegrityHelper
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [CodeIntegrityHelper](./nefarius.utilities.windowsversion.util.codeintegrityhelper.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [CodeIntegrityHelper](./nefarius.utilities.windowsversion.util.codeintegrityhelper.md)
 
 **Remarks:**
 
@@ -26,4 +26,4 @@ public static bool IsTestSignEnabled { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>

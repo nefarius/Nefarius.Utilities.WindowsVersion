@@ -8,7 +8,7 @@ Utility class for interaction with Code Integrity Policy settings.
 public static class CodeIntegrityPolicyHelper
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [CodeIntegrityPolicyHelper](./nefarius.utilities.windowsversion.util.codeintegritypolicyhelper.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [CodeIntegrityPolicyHelper](./nefarius.utilities.windowsversion.util.codeintegritypolicyhelper.md)
 
 **Remarks:**
 
@@ -26,7 +26,7 @@ public static bool WhqlDeveloperTestMode { get; set; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 **Remarks:**
 

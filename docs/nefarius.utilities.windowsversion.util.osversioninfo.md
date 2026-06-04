@@ -8,7 +8,8 @@ Provides detailed information about the host operating system.
 public static class OsVersionInfo
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [OsVersionInfo](./nefarius.utilities.windowsversion.util.osversioninfo.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [OsVersionInfo](./nefarius.utilities.windowsversion.util.osversioninfo.md)<br>
+Attributes [NullableContextAttribute](./system.runtime.compilerservices.nullablecontextattribute.md), [NullableAttribute](./system.runtime.compilerservices.nullableattribute.md)
 
 ## Properties
 
@@ -22,7 +23,7 @@ public static Nullable<Int32> BuildVersion { get; }
 
 #### Property Value
 
-[Nullable&lt;Int32&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1)<br>
+[Nullable](https://learn.microsoft.com/dotnet/api/system.nullable-1)<[Int32](https://learn.microsoft.com/dotnet/api/system.int32)><br>
 
 ### <a id="properties-edition"/>**Edition**
 
@@ -34,7 +35,7 @@ public static string Edition { get; }
 
 #### Property Value
 
-[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-isuacdisabled"/>**IsUacDisabled**
 
@@ -46,7 +47,7 @@ public static bool IsUacDisabled { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 ### <a id="properties-iswindows10"/>**IsWindows10**
 
@@ -58,7 +59,7 @@ public static bool IsWindows10 { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 **Remarks:**
 
@@ -74,7 +75,7 @@ public static bool IsWindowsServer { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 ### <a id="properties-majorversion"/>**MajorVersion**
 
@@ -86,7 +87,7 @@ public static int MajorVersion { get; }
 
 #### Property Value
 
-[Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
+[Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
 
 ### <a id="properties-minorversion"/>**MinorVersion**
 
@@ -98,7 +99,7 @@ public static int MinorVersion { get; }
 
 #### Property Value
 
-[Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
+[Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
 
 ### <a id="properties-name"/>**Name**
 
@@ -110,7 +111,7 @@ public static string Name { get; }
 
 #### Property Value
 
-[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-revisionversion"/>**RevisionVersion**
 
@@ -122,7 +123,7 @@ public static int RevisionVersion { get; }
 
 #### Property Value
 
-[Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
+[Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
 
 ### <a id="properties-servicepack"/>**ServicePack**
 
@@ -134,7 +135,7 @@ public static string ServicePack { get; }
 
 #### Property Value
 
-[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-version"/>**Version**
 
@@ -146,7 +147,7 @@ public static Version Version { get; }
 
 #### Property Value
 
-[Version](https://docs.microsoft.com/en-us/dotnet/api/system.version)<br>
+[Version](https://learn.microsoft.com/dotnet/api/system.version)<br>
 
 ### <a id="properties-versionstring"/>**VersionString**
 
@@ -158,4 +159,4 @@ public static string VersionString { get; }
 
 #### Property Value
 
-[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>

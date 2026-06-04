@@ -8,7 +8,7 @@ Utilities to detect if this system is a fresh or upgraded installation.
 public static class OsUpgradeDetection
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [OsUpgradeDetection](./nefarius.utilities.windowsversion.util.osupgradedetection.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [OsUpgradeDetection](./nefarius.utilities.windowsversion.util.osupgradedetection.md)
 
 **Remarks:**
 
@@ -26,4 +26,4 @@ public static bool IsGrandfathered { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>

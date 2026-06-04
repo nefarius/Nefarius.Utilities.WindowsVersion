@@ -8,7 +8,7 @@ Utility to interact with the Boot Configuration Database.
 public static class BcdHelper
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [BcdHelper](./nefarius.utilities.windowsversion.util.bcdhelper.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [BcdHelper](./nefarius.utilities.windowsversion.util.bcdhelper.md)
 
 **Remarks:**
 
@@ -26,4 +26,4 @@ public static bool AllowPrereleaseSignatures { get; set; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>

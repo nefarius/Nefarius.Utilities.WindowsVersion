@@ -8,7 +8,7 @@ Process and operating system architecture detection.
 public static class ArchitectureInfo
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [ArchitectureInfo](./nefarius.utilities.windowsversion.util.architectureinfo.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [ArchitectureInfo](./nefarius.utilities.windowsversion.util.architectureinfo.md)
 
 **Remarks:**
 
@@ -26,7 +26,7 @@ public static bool IsArm64 { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 ### <a id="properties-osbits"/>**OsBits**
 

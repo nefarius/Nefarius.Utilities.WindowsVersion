@@ -8,7 +8,7 @@ Utility to get UEFI details.
 public static class UefiHelper
 ```
 
-Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) → [UefiHelper](./nefarius.utilities.windowsversion.util.uefihelper.md)
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [UefiHelper](./nefarius.utilities.windowsversion.util.uefihelper.md)
 
 ## Properties
 
@@ -22,7 +22,7 @@ public static bool IsRunningInUefiMode { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 **Remarks:**
 
@@ -39,4 +39,4 @@ public static bool IsSecureBootEnabled { get; }
 
 #### Property Value
 
-[Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)<br>
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
