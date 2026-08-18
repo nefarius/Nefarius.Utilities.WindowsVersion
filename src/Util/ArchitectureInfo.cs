@@ -1,14 +1,13 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
 using Windows.Win32;
+using Windows.Win32.Foundation;
 using Windows.Win32.System.SystemInformation;
 
 using JetBrains.Annotations;
-
-using Microsoft.Win32.SafeHandles;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
@@ -56,7 +55,12 @@ public enum ProcessorArchitecture
     /// <summary>
     ///     IA-64 (Intel Itanium architecture).
     /// </summary>
-    Itanium64 = 3
+    Itanium64 = 3,
+
+    /// <summary>
+    ///     ARM64 (AArch64).
+    /// </summary>
+    Arm64 = 4
 }
 
 /// <summary>
@@ -70,15 +74,28 @@ public static class ArchitectureInfo
     /// <summary>
     ///     Gets whether the current process is running on ARM64.
     /// </summary>
-    public static unsafe bool IsArm64
+    public static bool IsArm64
     {
         get
         {
-            SafeProcessHandle handle = Process.GetCurrentProcess().SafeHandle;
-            IMAGE_FILE_MACHINE nativeMachine;
-            PInvoke.IsWow64Process2(handle, out _, &nativeMachine);
+            try
+            {
+                using Process process = Process.GetCurrentProcess();
+                if (!PInvoke.IsWow64Process2(process.SafeHandle, out _, out IMAGE_FILE_MACHINE nativeMachine))
+                {
+                    return false;
+                }
 
-            return nativeMachine == IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_ARM64;
+                return nativeMachine == IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_ARM64;
+            }
+            catch (EntryPointNotFoundException)
+            {
+                return false;
+            }
+            catch (DllNotFoundException)
+            {
+                return false;
+            }
         }
     }
 
@@ -139,6 +156,8 @@ public static class ArchitectureInfo
                         ProcessorArchitecture.Itanium64,
                     PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_INTEL =>
                         ProcessorArchitecture.Bit32,
+                    PROCESSOR_ARCHITECTURE.PROCESSOR_ARCHITECTURE_ARM64 =>
+                        ProcessorArchitecture.Arm64,
                     _ => ProcessorArchitecture.Unknown
                 };
             }
@@ -151,39 +170,9 @@ public static class ArchitectureInfo
         }
     }
 
-    private static IsWow64ProcessDelegate GetIsWow64ProcessDelegate()
-    {
-        FreeLibrarySafeHandle handle = PInvoke.LoadLibrary("kernel32");
-
-        if (handle.IsInvalid)
-        {
-            return null;
-        }
-
-        IntPtr fnPtr = PInvoke.GetProcAddress(handle, "IsWow64Process");
-
-        if (fnPtr != IntPtr.Zero)
-        {
-            return (IsWow64ProcessDelegate)Marshal.GetDelegateForFunctionPointer(fnPtr,
-                typeof(IsWow64ProcessDelegate));
-        }
-
-        return null;
-    }
-
     private static bool Is32BitProcessOn64BitProcessor()
     {
-        IsWow64ProcessDelegate fnDelegate = GetIsWow64ProcessDelegate();
-
-        if (fnDelegate == null)
-        {
-            return false;
-        }
-
-        bool retVal = fnDelegate.Invoke(Process.GetCurrentProcess().Handle, out bool isWow64);
-
-        return retVal && isWow64;
+        using Process process = Process.GetCurrentProcess();
+        return PInvoke.IsWow64Process(process.SafeHandle, out BOOL isWow64) && isWow64;
     }
-
-    private delegate bool IsWow64ProcessDelegate([In] IntPtr handle, [Out] out bool isWow64Process);
 }

@@ -3,7 +3,9 @@
   <PropertyGroup>
     <!-- Copyright information -->
     <Authors>Benjamin Höglinger-Stelzer</Authors>
-    <Copyright>Copyright © Benjamin Höglinger-Stelzer 2022-2025</Copyright>
+    <Copyright>Copyright © Benjamin Höglinger-Stelzer 2022-2026</Copyright>
+    <Description>Utility classes to get detailed Windows version information and extras like UEFI, BCD, and code-integrity properties.</Description>
+    <PackageTags>windows;version;os;uefi;bcd;secureboot</PackageTags>
 
     <!-- Package Icon -->
     <PackageIcon>NSS-128x128.png</PackageIcon>
@@ -13,6 +15,7 @@
     <!-- Common solution settings -->
     <OutputPath>$(SolutionDir)bin\</OutputPath>
     <LangVersion>latest</LangVersion>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
     <!-- Docs and symbols generation -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

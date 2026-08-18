@@ -1,7 +1,19 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Nefarius.Utilities.WindowsVersion.Util;
 
-using Nefarius.Utilities.WindowsVersion.Util;
-
-var t = CodeIntegrityHelper.IsTestSignEnabled;
-
-Console.WriteLine(OperatingSystem.IsWindowsVersionAtLeast(10));
+Console.WriteLine($"Name: {OsVersionInfo.Name}");
+Console.WriteLine($"Edition: {OsVersionInfo.Edition}");
+Console.WriteLine($"Version: {OsVersionInfo.VersionString}");
+Console.WriteLine($"DisplayVersion: {OsVersionInfo.DisplayVersion}");
+Console.WriteLine($"IsWindows10: {OsVersionInfo.IsWindows10}");
+Console.WriteLine($"IsWindows11: {OsVersionInfo.IsWindows11}");
+Console.WriteLine($"IsWindowsServer: {OsVersionInfo.IsWindowsServer}");
+Console.WriteLine($"IsUacDisabled: {OsVersionInfo.IsUacDisabled}");
+Console.WriteLine($"IsGrandfathered: {OsUpgradeDetection.IsGrandfathered}");
+Console.WriteLine($"IsArm64: {ArchitectureInfo.IsArm64}");
+Console.WriteLine($"ProcessorBits: {ArchitectureInfo.ProcessorBits}");
+Console.WriteLine($"OsBits: {ArchitectureInfo.OsBits}");
+Console.WriteLine($"ProgramBits: {ArchitectureInfo.ProgramBits}");
+Console.WriteLine($"IsRunningInUefiMode: {UefiHelper.IsRunningInUefiMode}");
+Console.WriteLine($"IsSecureBootEnabled: {UefiHelper.IsSecureBootEnabled}");
+Console.WriteLine($"IsTestSignEnabled: {CodeIntegrityHelper.IsTestSignEnabled}");
+Console.WriteLine($"WhqlDeveloperTestMode: {CodeIntegrityPolicyHelper.WhqlDeveloperTestMode}");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -21,33 +22,25 @@ public static class OsUpgradeDetection
     {
         get
         {
-            using RegistryKey setupKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\Setup");
-            using RegistryKey upgradeKey = setupKey?.OpenSubKey("Upgrade");
-            // if this key isn't there, don't look any further
-            if (upgradeKey == null)
+            using RegistryKey? setupKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\Setup");
+            if (setupKey is null)
             {
                 return false;
             }
 
-            // only look at "Source OS (...)" sub-keys
+            using RegistryKey? upgradeKey = setupKey.OpenSubKey("Upgrade");
+            if (upgradeKey is null)
+            {
+                return false;
+            }
+
             foreach (string sosKeyName in setupKey.GetSubKeyNames().Where(v =>
                          v.StartsWith("Source OS", StringComparison.InvariantCultureIgnoreCase)))
             {
-                using RegistryKey sosKey = setupKey.OpenSubKey(sosKeyName);
-                string productName = sosKey?.GetValue("ProductName") as string;
+                using RegistryKey? sosKey = setupKey.OpenSubKey(sosKeyName);
+                string? productName = sosKey?.GetValue("ProductName") as string;
 
-                if (string.IsNullOrEmpty(productName))
-                {
-                    continue;
-                }
-
-                // TODO: untested but should work
-                if (productName.StartsWith("Windows 7", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return true;
-                }
-
-                if (productName.StartsWith("Windows 8", StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(productName))
                 {
                     return true;
                 }

@@ -6,18 +6,22 @@ on:
     paths-ignore:
       - 'docs/**'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: master
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup .Net SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
 
       - name: Install XMLDoc2Markdown
         run: dotnet tool install -g Nefarius.Tools.XMLDoc2Markdown

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿#nullable enable
+using System.Diagnostics.CodeAnalysis;
 
 using Windows.Win32;
 using Windows.Win32.UI.Shell;
