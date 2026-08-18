@@ -1,10 +1,11 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
-using Windows.Win32;
+using Windows.Wdk.System.SystemInformation;
 using Windows.Win32.Foundation;
+using Windows.Win32.System.WindowsProgramming;
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
@@ -18,68 +19,28 @@ public static class CodeIntegrityHelper
     /// <summary>
     ///     Determines if the system is currently in TESTSIGNING mode.
     /// </summary>
-    public static bool IsTestSignEnabled
+    public static unsafe bool IsTestSignEnabled
     {
         get
         {
-            IntPtr pIntegrity = Marshal.AllocHGlobal(Marshal.SizeOf<SYSTEM_CODEINTEGRITY_INFORMATION>());
-
-            try
+            SYSTEM_CODEINTEGRITY_INFORMATION integrity = new()
             {
-                using FreeLibrarySafeHandle ntDll = PInvoke.GetModuleHandle("ntdll.dll");
-                FARPROC ptr = PInvoke.GetProcAddress(ntDll, "NtQuerySystemInformation");
+                Length = (uint)sizeof(SYSTEM_CODEINTEGRITY_INFORMATION)
+            };
 
-                NtQuerySystemInformation ntQuerySystemInformation =
-                    Marshal.GetDelegateForFunctionPointer<NtQuerySystemInformation>(ptr);
+            uint returnLength = 0;
+            NTSTATUS status = Windows.Wdk.PInvoke.NtQuerySystemInformation(
+                SYSTEM_INFORMATION_CLASS.SystemCodeIntegrityInformation,
+                &integrity,
+                integrity.Length,
+                ref returnLength);
 
-                SYSTEM_CODEINTEGRITY_INFORMATION integrity;
-                integrity.Length = (uint)Marshal.SizeOf<SYSTEM_CODEINTEGRITY_INFORMATION>();
-                integrity.CodeIntegrityOptions = 0;
-
-                Marshal.StructureToPtr(integrity, pIntegrity, false);
-
-                // https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/codeintegrity.htm
-                int status = ntQuerySystemInformation(
-                    103, // SystemCodeIntegrityInformation (0x67)
-                    pIntegrity,
-                    integrity.Length,
-                    out _
-                );
-
-                int error = Marshal.GetLastWin32Error();
-
-                if (status != (int)WIN32_ERROR.ERROR_SUCCESS)
-                {
-                    throw new Win32Exception(error, "NtQuerySystemInformation failed");
-                }
-
-                integrity = Marshal.PtrToStructure<SYSTEM_CODEINTEGRITY_INFORMATION>(pIntegrity);
-
-                return (integrity.CodeIntegrityOptions & /* CODEINTEGRITY_OPTION_TESTSIGN */ 0x02) != 0;
-            }
-            finally
+            if ((int)status != 0)
             {
-                Marshal.FreeHGlobal(pIntegrity);
+                throw new Win32Exception((int)status, "NtQuerySystemInformation failed");
             }
+
+            return (integrity.CodeIntegrityOptions & /* CODEINTEGRITY_OPTION_TESTSIGN */ 0x02) != 0;
         }
     }
-
-    #region Native
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    private delegate int NtQuerySystemInformation(
-        uint systemInformationClass,
-        IntPtr systemInformation,
-        uint systemInformationLength,
-        out uint returnLength);
-
-    [StructLayout(LayoutKind.Sequential)]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    private struct SYSTEM_CODEINTEGRITY_INFORMATION
-    {
-        public uint Length;
-        public uint CodeIntegrityOptions;
-    }
-
-    #endregion
 }

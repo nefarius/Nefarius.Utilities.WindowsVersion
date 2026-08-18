@@ -25,6 +25,18 @@ public static Nullable<Int32> BuildVersion { get; }
 
 [Nullable](https://learn.microsoft.com/dotnet/api/system.nullable-1)<[Int32](https://learn.microsoft.com/dotnet/api/system.int32)><br>
 
+### <a id="properties-displayversion"/>**DisplayVersion**
+
+Feature-update label such as 22H2 or 24H2, when the OS reports one.
+
+```csharp
+public static string DisplayVersion { get; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
 ### <a id="properties-edition"/>**Edition**
 
 Gets the edition of the operating system running on this computer.
@@ -64,6 +76,18 @@ public static bool IsWindows10 { get; }
 **Remarks:**
 
 This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning strategy.
+
+### <a id="properties-iswindows11"/>**IsWindows11**
+
+True if the current system is a Windows 11 client (build 22000 or later).
+
+```csharp
+public static bool IsWindows11 { get; }
+```
+
+#### Property Value
+
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
 ### <a id="properties-iswindowsserver"/>**IsWindowsServer**
 

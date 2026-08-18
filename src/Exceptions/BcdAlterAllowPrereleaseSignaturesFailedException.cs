@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
@@ -24,8 +25,10 @@ public class BcdAlterAllowPrereleaseSignaturesFailedException : Exception
     {
     }
 
+#pragma warning disable SYSLIB0051
     internal BcdAlterAllowPrereleaseSignaturesFailedException(SerializationInfo info, StreamingContext context) :
         base(info, context)
     {
     }
+#pragma warning restore SYSLIB0051
 }

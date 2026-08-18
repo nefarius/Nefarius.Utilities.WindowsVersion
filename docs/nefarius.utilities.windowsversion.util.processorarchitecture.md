@@ -19,3 +19,4 @@ Implements [IComparable](https://learn.microsoft.com/dotnet/api/system.icomparab
 | Bit32 | 1 | 32-Bits (a.k.a x86). |
 | Bit64 | 2 | 64-Bits (a.k.a. x86_64). |
 | Itanium64 | 3 | IA-64 (Intel Itanium architecture). |
+| Arm64 | 4 | ARM64 (AArch64). |

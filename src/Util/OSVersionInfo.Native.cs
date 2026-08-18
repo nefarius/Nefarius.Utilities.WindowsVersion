@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
@@ -13,7 +14,7 @@ public static partial class OsVersionInfo
 {
     #region OSVERSIONINFOEX
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     private struct OSVERSIONINFOEX
     {
         public int dwOSVersionInfoSize;
@@ -50,7 +51,7 @@ public static partial class OsVersionInfo
 
     #region VERSION
 
-    [DllImport("kernel32.dll")]
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern bool GetVersionEx(ref OSVERSIONINFOEX osVersionInfo);
 
     #endregion VERSION
@@ -141,6 +142,20 @@ public static partial class OsVersionInfo
     private const int PRODUCT_ENTERPRISE_E = 0x00000046;
 
     private const int PRODUCT_ULTIMATE_E = 0x00000047;
+    private const int PRODUCT_CORE_N = 0x00000062;
+    private const int PRODUCT_CORE_COUNTRYSPECIFIC = 0x00000063;
+    private const int PRODUCT_CORE_SINGLELANGUAGE = 0x00000064;
+    private const int PRODUCT_CORE = 0x00000065;
+    private const int PRODUCT_EDUCATION = 0x00000079;
+    private const int PRODUCT_EDUCATION_N = 0x0000007A;
+    private const int PRODUCT_ENTERPRISE_S = 0x0000007D;
+    private const int PRODUCT_ENTERPRISE_S_N = 0x0000007E;
+    private const int PRODUCT_PRO_WORKSTATION = 0x000000A1;
+    private const int PRODUCT_PRO_WORKSTATION_N = 0x000000A2;
+    private const int PRODUCT_CLOUD = 0x000000B2;
+    private const int PRODUCT_CLOUDN = 0x000000B3;
+    private const int PRODUCT_IOTENTERPRISE = 0x000000BC;
+    private const int PRODUCT_IOTENTERPRISES = 0x000000BF;
     //private const int PRODUCT_UNLICENSED = 0xABCDABCD;
 
     #endregion PRODUCT

@@ -1,9 +1,7 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 using Microsoft.Win32;
@@ -17,7 +15,7 @@ using Microsoft.Win32;
 //Thakts to Brisingr Aerowing for help with the Windows 10 adaptation
 // Maintained and extended by Benjamin Höglinger-Stelzer 2018-2022
 
-// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2025
+// Modified and extended by Benjamin "Nefarius" Höglinger-Stelzer 2022-2026
 
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
@@ -29,22 +27,40 @@ namespace Nefarius.Utilities.WindowsVersion.Util;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class OsVersionInfo
 {
+    private const string NtCurrentVersionKey = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion";
+    private const int Windows11MinBuild = 22000;
+    private const int WindowsServer2016MinBuild = 14393;
+    private const int WindowsServer2019MinBuild = 17763;
+    private const int WindowsServer2022MinBuild = 20348;
+    private const int WindowsServer2025MinBuild = 26100;
+
+    private static object? GetNtCurrentVersionValue(string name)
+    {
+        return Registry.GetValue(NtCurrentVersionKey, name, null);
+    }
+
+    private static string? GetNtCurrentVersionString(string name)
+    {
+        return GetNtCurrentVersionValue(name) as string;
+    }
+
+    private static int? GetNtCurrentVersionDword(string name)
+    {
+        return GetNtCurrentVersionValue(name) switch
+        {
+            int value => value,
+            _ => null
+        };
+    }
+
     /// <summary>
-    ///     https://en.wikipedia.org/wiki/Windows_10_version_history#Channels
+    ///     Feature-update label such as 22H2 or 24H2, when the OS reports one.
     /// </summary>
-    private static readonly List<string> Windows10ReleaseIds =
-    [
-        "1507", // <-- 1st public release of Windows 10 codenamed "Threshold 1"
-        "1607",
-        "1703",
-        "1709",
-        "1803",
-        "1809",
-        "1903",
-        "1909",
-        "2004",
-        "2009" // <-- last time this value was actually updated by Microsoft
-    ];
+    public static string? DisplayVersion => GetNtCurrentVersionString("DisplayVersion");
+
+    private static string? ReleaseId => GetNtCurrentVersionString("ReleaseId");
+
+    private static string? EditionId => GetNtCurrentVersionString("EditionID");
 
     #region SERVICE PACK
 
@@ -76,17 +92,14 @@ public static partial class OsVersionInfo
     ///     True if the current system is Windows 10 or newer, false otherwise.
     /// </summary>
     /// <remarks>This also includes Windows 11 due to the stupidity and inconsistency of Microsoft's versioning strategy.</remarks>
-    public static bool IsWindows10
-    {
-        get
-        {
-            string? releaseId = (string?)Registry.GetValue(
-                @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion",
-                "ReleaseId", null);
+    public static bool IsWindows10 =>
+        GetNtCurrentVersionDword("CurrentMajorVersionNumber") >= 10 ||
+        !string.IsNullOrEmpty(ReleaseId);
 
-            return !string.IsNullOrEmpty(releaseId) && Windows10ReleaseIds.Any(id => id.Contains(releaseId));
-        }
-    }
+    /// <summary>
+    ///     True if the current system is a Windows 11 client (build 22000 or later).
+    /// </summary>
+    public static bool IsWindows11 => !IsWindowsServer && (BuildVersion ?? 0) >= Windows11MinBuild;
 
     #endregion
 
@@ -101,7 +114,6 @@ public static partial class OsVersionInfo
         {
             string edition = string.Empty;
 
-            OperatingSystem osVersion = Environment.OSVersion;
             OSVERSIONINFOEX osVersionInfo = new() { dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX)) };
 
             if (!GetVersionEx(ref osVersionInfo))
@@ -109,8 +121,8 @@ public static partial class OsVersionInfo
                 return edition;
             }
 
-            int majorVersion = osVersion.Version.Major;
-            int minorVersion = osVersion.Version.Minor;
+            int majorVersion = MajorVersion;
+            int minorVersion = MinorVersion;
             byte productType = osVersionInfo.wProductType;
             short suiteMask = osVersionInfo.wSuiteMask;
 
@@ -200,7 +212,7 @@ public static partial class OsVersionInfo
 
                         break;
                     }
-                case 6:
+                case >= 6:
                     {
                         if (GetProductInfo(majorVersion, minorVersion,
                                 osVersionInfo.wServicePackMajor, osVersionInfo.wServicePackMinor,
@@ -286,8 +298,27 @@ public static partial class OsVersionInfo
                                 PRODUCT_ULTIMATE_E => "Ultimate E",
                                 PRODUCT_WEB_SERVER => "Web Server",
                                 PRODUCT_WEB_SERVER_CORE => "Web Server (core installation)",
+                                PRODUCT_CORE => "Home",
+                                PRODUCT_CORE_N => "Home N",
+                                PRODUCT_CORE_COUNTRYSPECIFIC => "Home China",
+                                PRODUCT_CORE_SINGLELANGUAGE => "Home Single Language",
+                                PRODUCT_EDUCATION => "Education",
+                                PRODUCT_EDUCATION_N => "Education N",
+                                PRODUCT_ENTERPRISE_S => "Enterprise LTSC",
+                                PRODUCT_ENTERPRISE_S_N => "Enterprise N LTSC",
+                                PRODUCT_PRO_WORKSTATION => "Pro for Workstations",
+                                PRODUCT_PRO_WORKSTATION_N => "Pro for Workstations N",
+                                PRODUCT_CLOUD => "S",
+                                PRODUCT_CLOUDN => "S N",
+                                PRODUCT_IOTENTERPRISE => "IoT Enterprise",
+                                PRODUCT_IOTENTERPRISES => "IoT Enterprise LTSC",
                                 _ => edition
                             };
+                        }
+
+                        if (string.IsNullOrEmpty(edition))
+                        {
+                            edition = EditionId ?? string.Empty;
                         }
 
                         break;
@@ -312,16 +343,12 @@ public static partial class OsVersionInfo
             using RegistryKey? key = Registry.LocalMachine.OpenSubKey(
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System");
 
-            return !int.TryParse(key?.GetValue("ConsentPromptBehaviorAdmin")?.ToString(), out int value) ||
-                   value != 5;
+            return int.TryParse(key?.GetValue("EnableLUA")?.ToString(), out int enableLua) &&
+                   enableLua == 0;
         }
     }
 
     #region NAME
-
-    private static string? ReleaseId => (string?)Registry.GetValue(
-        @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion",
-        "ReleaseId", null);
 
     /// <summary>
     ///     Gets the name of the operating system running on this computer.
@@ -340,34 +367,8 @@ public static partial class OsVersionInfo
                 return name;
             }
 
-            int majorVersion = osVersion.Version.Major;
-            int minorVersion = osVersion.Version.Minor;
-
-            // TODO: deprecate this. Use a proper manifest. Always.
-            if (majorVersion == 6 && minorVersion == 2)
-            {
-                //The registry read workaround is by Scott Vickery. Thanks a lot for the help!
-
-                //http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
-
-                // For applications that have been manifested for Windows 8.1 & Windows 10. Applications not manifested for 8.1 or 10 will return the Windows 8 OS version value (6.2). 
-                // By reading the registry, we'll get the exact version - meaning we can even compare against  Win 8 and Win 8.1.
-                string? exactVersion =
-                    Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                        "CurrentVersion", null) as string;
-                if (!string.IsNullOrEmpty(exactVersion))
-                {
-                    string[] splitResult = exactVersion!.Split('.');
-                    majorVersion = Convert.ToInt32(splitResult[0]);
-                    minorVersion = Convert.ToInt32(splitResult[1]);
-                }
-
-                if (IsWindows10)
-                {
-                    majorVersion = 10;
-                    minorVersion = 0;
-                }
-            }
+            int majorVersion = MajorVersion;
+            int minorVersion = MinorVersion;
 
             switch (osVersion.Platform)
             {
@@ -455,7 +456,7 @@ public static partial class OsVersionInfo
 
                                 break;
                             case 10:
-                                name = ParseWindows10Version(minorVersion, productType, ReleaseId ?? "0");
+                                name = ParseWindows10Version(minorVersion, productType);
 
                                 break;
                         }
@@ -518,28 +519,45 @@ public static partial class OsVersionInfo
         return string.Empty;
     }
 
-    private static string ParseWindows10Version(int minorVersion, byte productType, string releaseId)
+    private static string ParseWindows10Version(int minorVersion, byte productType)
     {
-        switch (minorVersion)
+        if (minorVersion != 0)
         {
-            case 0:
-                switch (productType)
-                {
-                    case 1:
-                        return $"Windows 10 ({ReleaseId})";
-                    case 3:
-                        switch (releaseId)
-                        {
-                            case "1607":
-                                return "Windows Server 2016";
-                            case "1809":
-                                return "Windows Server 2019";
-                        }
+            return string.Empty;
+        }
 
-                        break;
+        string label = DisplayVersion ?? ReleaseId ?? BuildVersion?.ToString() ?? "0";
+        int build = BuildVersion ?? 0;
+
+        switch (productType)
+        {
+            case VER_NT_WORKSTATION:
+                return build >= Windows11MinBuild
+                    ? $"Windows 11 ({label})"
+                    : $"Windows 10 ({label})";
+            case VER_NT_DOMAIN_CONTROLLER:
+            case VER_NT_SERVER:
+                if (build >= WindowsServer2025MinBuild)
+                {
+                    return "Windows Server 2025";
                 }
 
-                break;
+                if (build >= WindowsServer2022MinBuild)
+                {
+                    return "Windows Server 2022";
+                }
+
+                if (build >= WindowsServer2019MinBuild)
+                {
+                    return "Windows Server 2019";
+                }
+
+                if (build >= WindowsServer2016MinBuild)
+                {
+                    return "Windows Server 2016";
+                }
+
+                return $"Windows Server ({label})";
         }
 
         return string.Empty;
@@ -558,11 +576,7 @@ public static partial class OsVersionInfo
     {
         get
         {
-            string? value = (string?)Registry.GetValue(
-                @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "CurrentBuildNumber",
-                null
-            );
+            string? value = GetNtCurrentVersionString("CurrentBuildNumber");
 
             if (string.IsNullOrEmpty(value))
             {
@@ -611,13 +625,13 @@ public static partial class OsVersionInfo
     {
         get
         {
-            if (IsWindows10)
+            int? major = GetNtCurrentVersionDword("CurrentMajorVersionNumber");
+            if (major.HasValue)
             {
-                return 10;
+                return major.Value;
             }
 
-            string? exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "CurrentVersion", null) as string;
+            string? exactVersion = GetNtCurrentVersionString("CurrentVersion");
 
             if (string.IsNullOrEmpty(exactVersion))
             {
@@ -640,13 +654,13 @@ public static partial class OsVersionInfo
     {
         get
         {
-            if (IsWindows10)
+            int? minor = GetNtCurrentVersionDword("CurrentMinorVersionNumber");
+            if (minor.HasValue)
             {
-                return 0;
+                return minor.Value;
             }
 
-            string? exactVersion = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "CurrentVersion", null) as string;
+            string? exactVersion = GetNtCurrentVersionString("CurrentVersion");
 
             if (string.IsNullOrEmpty(exactVersion))
             {
@@ -665,7 +679,9 @@ public static partial class OsVersionInfo
     /// <summary>
     ///     Gets the revision version number of the operating system running on this computer.
     /// </summary>
-    public static int RevisionVersion => IsWindows10 ? 0 : Environment.OSVersion.Version.Revision;
+    public static int RevisionVersion =>
+        GetNtCurrentVersionDword("UBR") ??
+        (IsWindows10 ? 0 : Environment.OSVersion.Version.Revision);
 
     #endregion REVISION
 

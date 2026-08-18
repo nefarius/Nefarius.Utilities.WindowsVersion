@@ -3,6 +3,9 @@ GetModuleHandle
 WIN32_ERROR
 LoadLibrary
 GetNativeSystemInfo
+IsWow64Process
 IsWow64Process2
 GetFirmwareEnvironmentVariable
 IsOS
+NtQuerySystemInformation
+SYSTEM_CODEINTEGRITY_INFORMATION

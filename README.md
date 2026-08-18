@@ -1,18 +1,19 @@
 # <img src="assets/NSS-128x128.png" align="left" />Nefarius.Utilities.WindowsVersion
 
 [![.NET](https://github.com/nefarius/Nefarius.Utilities.WindowsVersion/actions/workflows/build.yml/badge.svg)](https://github.com/nefarius/Nefarius.Utilities.WindowsVersion/actions/workflows/build.yml)
-![Requirements](https://img.shields.io/badge/Requires-.NET%20Standard%202.0-blue.svg)
+![Requirements](https://img.shields.io/badge/Requires-.NET%20Standard%202.0%20%7C%20.NET%2010-blue.svg)
 [![Nuget](https://img.shields.io/nuget/v/Nefarius.Utilities.WindowsVersion)](https://www.nuget.org/packages/Nefarius.Utilities.WindowsVersion/) [![Nuget](https://img.shields.io/nuget/dt/Nefarius.Utilities.WindowsVersion)](https://www.nuget.org/packages/Nefarius.Utilities.WindowsVersion/)
 
 Utility classes to get detailed Windows version and some extras like UEFI and BCD properties.
 
 ## Features
 
-- Get detailed information about most (all?) known Windows versions and editions out there
+- Get detailed information about most known Windows versions and editions out there
   - Service Pack (where it applies)
   - Edition like Home, Professional etc. (where it applies)
   - Server or client OS
-  - Release and Build numbers
+  - Distinguishes Windows 10 from Windows 11 (build 22000+) and names Server 2016 through 2025
+  - Release (`DisplayVersion` such as 24H2), build, and UBR revision numbers
   - Whether the OS installation is fresh or grandfathered (in-place upgraded from an older version)
 - Read and write Boot Configuration Data (BCD)
   - Currently only querying or setting test-signing is implemented
@@ -24,7 +25,7 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
 
 ## Documentation
 
-[Link to API docs](docs/index.md).
+[API documentation](https://github.com/nefarius/Nefarius.Utilities.WindowsVersion/blob/master/docs/index.md).
 
 ## Sources & 3rd party credits
 
