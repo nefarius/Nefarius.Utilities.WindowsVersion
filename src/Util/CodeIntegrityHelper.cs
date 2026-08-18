@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 using Windows.Wdk.System.SystemInformation;
@@ -35,12 +34,21 @@ public static class CodeIntegrityHelper
                 integrity.Length,
                 ref returnLength);
 
-            if ((int)status != 0)
+            if ((int)status < 0)
             {
-                throw new Win32Exception((int)status, "NtQuerySystemInformation failed");
+                throw new NtStatusException(status);
             }
 
             return (integrity.CodeIntegrityOptions & /* CODEINTEGRITY_OPTION_TESTSIGN */ 0x02) != 0;
+        }
+    }
+
+    private sealed class NtStatusException : Exception
+    {
+        internal NtStatusException(NTSTATUS status)
+            : base($"NtQuerySystemInformation failed with NTSTATUS {status}")
+        {
+            HResult = status;
         }
     }
 }

@@ -12,7 +12,7 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
   - Service Pack (where it applies)
   - Edition like Home, Professional etc. (where it applies)
   - Server or client OS
-  - Distinguishes Windows 10 from Windows 11 (build 22000+) and names Server 2016 through 2025
+  - Distinguishes Windows 10 from Windows 11 client systems (build 22000+) and names Server 2016 through 2025
   - Release (`DisplayVersion` such as 24H2), build, and UBR revision numbers
   - Whether the OS installation is fresh or grandfathered (in-place upgraded from an older version)
 - Read and write Boot Configuration Data (BCD)

@@ -9,8 +9,6 @@ using Windows.Win32.System.SystemInformation;
 
 using JetBrains.Annotations;
 
-using Microsoft.Win32.SafeHandles;
-
 namespace Nefarius.Utilities.WindowsVersion.Util;
 
 /// <summary>
@@ -82,8 +80,8 @@ public static class ArchitectureInfo
         {
             try
             {
-                SafeProcessHandle handle = Process.GetCurrentProcess().SafeHandle;
-                if (!PInvoke.IsWow64Process2(handle, out _, out IMAGE_FILE_MACHINE nativeMachine))
+                using Process process = Process.GetCurrentProcess();
+                if (!PInvoke.IsWow64Process2(process.SafeHandle, out _, out IMAGE_FILE_MACHINE nativeMachine))
                 {
                     return false;
                 }
@@ -174,7 +172,7 @@ public static class ArchitectureInfo
 
     private static bool Is32BitProcessOn64BitProcessor()
     {
-        SafeProcessHandle handle = Process.GetCurrentProcess().SafeHandle;
-        return PInvoke.IsWow64Process(handle, out BOOL isWow64) && isWow64;
+        using Process process = Process.GetCurrentProcess();
+        return PInvoke.IsWow64Process(process.SafeHandle, out BOOL isWow64) && isWow64;
     }
 }
