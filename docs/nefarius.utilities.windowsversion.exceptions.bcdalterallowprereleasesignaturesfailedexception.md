@@ -9,7 +9,8 @@ public class BcdAlterAllowPrereleaseSignaturesFailedException : System.Exception
 ```
 
 Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [Exception](https://learn.microsoft.com/dotnet/api/system.exception) → [BcdAlterAllowPrereleaseSignaturesFailedException](./nefarius.utilities.windowsversion.exceptions.bcdalterallowprereleasesignaturesfailedexception.md)<br>
-Implements [ISerializable](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable)
+Implements [ISerializable](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable)<br>
+Attributes [NullableContextAttribute](./system.runtime.compilerservices.nullablecontextattribute.md), [NullableAttribute](./system.runtime.compilerservices.nullableattribute.md)
 
 ## Properties
 
