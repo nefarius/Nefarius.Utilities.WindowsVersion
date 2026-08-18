@@ -27,3 +27,23 @@ public static bool IsGrandfathered { get; }
 #### Property Value
 
 [Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
+
+## Methods
+
+### <a id="methods-hassourceosupgrade"/>**HasSourceOsUpgrade(IEnumerable&lt;String&gt;, Func&lt;String, String&gt;)**
+
+True when a `Source OS*` setup subkey reports a non-empty ProductName.
+
+```csharp
+internal static bool HasSourceOsUpgrade(IEnumerable<String> subKeyNames, Func<String, String> getProductName)
+```
+
+#### Parameters
+
+`subKeyNames` [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)<[String](https://learn.microsoft.com/dotnet/api/system.string)><br>
+
+`getProductName` [Func](https://learn.microsoft.com/dotnet/api/system.func-2)<[String](https://learn.microsoft.com/dotnet/api/system.string), [String](https://learn.microsoft.com/dotnet/api/system.string)><br>
+
+#### Returns
+
+[Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)

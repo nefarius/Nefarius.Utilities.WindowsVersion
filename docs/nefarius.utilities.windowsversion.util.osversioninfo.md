@@ -184,3 +184,57 @@ public static string VersionString { get; }
 #### Property Value
 
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+## Methods
+
+### <a id="methods-mapproductinfotoedition"/>**MapProductInfoToEdition(Int32)**
+
+Maps a `GetProductInfo` product code to a display edition name.
+
+```csharp
+internal static string MapProductInfoToEdition(int productInfo)
+```
+
+#### Parameters
+
+`productInfo` [Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
+
+#### Returns
+
+The edition name, or an empty string when the product code is unknown.
+
+### <a id="methods-parsevistathrough8"/>**ParseVistaThrough8(Int32, Byte)**
+
+```csharp
+internal static string ParseVistaThrough8(int minorVersion, byte productType)
+```
+
+#### Parameters
+
+`minorVersion` [Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
+
+`productType` [Byte](https://learn.microsoft.com/dotnet/api/system.byte)<br>
+
+#### Returns
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)
+
+### <a id="methods-parsewindows10version"/>**ParseWindows10Version(Int32, Byte, Int32, String)**
+
+```csharp
+internal static string ParseWindows10Version(int minorVersion, byte productType, int build, string label)
+```
+
+#### Parameters
+
+`minorVersion` [Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
+
+`productType` [Byte](https://learn.microsoft.com/dotnet/api/system.byte)<br>
+
+`build` [Int32](https://learn.microsoft.com/dotnet/api/system.int32)<br>
+
+`label` [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+#### Returns
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)
