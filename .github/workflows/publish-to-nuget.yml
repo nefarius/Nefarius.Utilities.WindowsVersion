@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v7
         with:
@@ -29,9 +32,15 @@ jobs:
       - name: Make Nuget Packages
         run: dotnet pack -c Release
 
+      - name: NuGet login (OIDC to temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: Nefarius
+
       - name: Publish To Nuget
         run: |
           dotnet nuget push bin/*.nupkg --skip-duplicate -k "$NUGET_AUTH_TOKEN" -s https://api.nuget.org/v3/index.json
           dotnet nuget push bin/*.snupkg --skip-duplicate -k "$NUGET_AUTH_TOKEN" -s https://api.nuget.org/v3/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }}
+          NUGET_AUTH_TOKEN: ${{ steps.login.outputs.NUGET_API_KEY }}
