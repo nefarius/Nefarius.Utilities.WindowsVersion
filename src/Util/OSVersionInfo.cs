@@ -218,102 +218,7 @@ public static partial class OsVersionInfo
                                 osVersionInfo.wServicePackMajor, osVersionInfo.wServicePackMinor,
                                 out int ed))
                         {
-                            edition = ed switch
-                            {
-                                PRODUCT_BUSINESS => "Business",
-                                PRODUCT_BUSINESS_N => "Business N",
-                                PRODUCT_CLUSTER_SERVER => "HPC Edition",
-                                PRODUCT_CLUSTER_SERVER_V => "HPC Edition without Hyper-V",
-                                PRODUCT_DATACENTER_SERVER => "Datacenter Server",
-                                PRODUCT_DATACENTER_SERVER_CORE => "Datacenter Server (core installation)",
-                                PRODUCT_DATACENTER_SERVER_V => "Datacenter Server without Hyper-V",
-                                PRODUCT_DATACENTER_SERVER_CORE_V =>
-                                    "Datacenter Server without Hyper-V (core installation)",
-                                PRODUCT_EMBEDDED => "Embedded",
-                                PRODUCT_ENTERPRISE => "Enterprise",
-                                PRODUCT_ENTERPRISE_N => "Enterprise N",
-                                PRODUCT_ENTERPRISE_E => "Enterprise E",
-                                PRODUCT_ENTERPRISE_SERVER => "Enterprise Server",
-                                PRODUCT_ENTERPRISE_SERVER_CORE => "Enterprise Server (core installation)",
-                                PRODUCT_ENTERPRISE_SERVER_CORE_V =>
-                                    "Enterprise Server without Hyper-V (core installation)",
-                                PRODUCT_ENTERPRISE_SERVER_IA64 => "Enterprise Server for Itanium-based Systems",
-                                PRODUCT_ENTERPRISE_SERVER_V => "Enterprise Server without Hyper-V",
-                                PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT => "Essential Business Server MGMT",
-                                PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL => "Essential Business Server ADDL",
-                                PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC => "Essential Business Server MGMTSVC",
-                                PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC => "Essential Business Server ADDLSVC",
-                                PRODUCT_HOME_BASIC => "Home Basic",
-                                PRODUCT_HOME_BASIC_N => "Home Basic N",
-                                PRODUCT_HOME_BASIC_E => "Home Basic E",
-                                PRODUCT_HOME_PREMIUM => "Home Premium",
-                                PRODUCT_HOME_PREMIUM_N => "Home Premium N",
-                                PRODUCT_HOME_PREMIUM_E => "Home Premium E",
-                                PRODUCT_HOME_PREMIUM_SERVER => "Home Premium Server",
-                                PRODUCT_HYPERV => "Microsoft Hyper-V Server",
-                                PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT =>
-                                    "Windows Essential Business Management Server",
-                                PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING =>
-                                    "Windows Essential Business Messaging Server",
-                                PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY => "Windows Essential Business Security Server",
-                                PRODUCT_PROFESSIONAL => "Professional",
-                                PRODUCT_PROFESSIONAL_N => "Professional N",
-                                PRODUCT_PROFESSIONAL_E => "Professional E",
-                                PRODUCT_SB_SOLUTION_SERVER => "SB Solution Server",
-                                PRODUCT_SB_SOLUTION_SERVER_EM => "SB Solution Server EM",
-                                PRODUCT_SERVER_FOR_SB_SOLUTIONS => "Server for SB Solutions",
-                                PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM => "Server for SB Solutions EM",
-                                PRODUCT_SERVER_FOR_SMALLBUSINESS => "Windows Essential Server Solutions",
-                                PRODUCT_SERVER_FOR_SMALLBUSINESS_V =>
-                                    "Windows Essential Server Solutions without Hyper-V",
-                                PRODUCT_SERVER_FOUNDATION => "Server Foundation",
-                                PRODUCT_SMALLBUSINESS_SERVER => "Windows Small Business Server",
-                                PRODUCT_SMALLBUSINESS_SERVER_PREMIUM => "Windows Small Business Server Premium",
-                                PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE =>
-                                    "Windows Small Business Server Premium (core installation)",
-                                PRODUCT_SOLUTION_EMBEDDEDSERVER => "Solution Embedded Server",
-                                PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE => "Solution Embedded Server (core installation)",
-                                PRODUCT_STANDARD_SERVER => "Standard Server",
-                                PRODUCT_STANDARD_SERVER_CORE => "Standard Server (core installation)",
-                                PRODUCT_STANDARD_SERVER_SOLUTIONS => "Standard Server Solutions",
-                                PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE =>
-                                    "Standard Server Solutions (core installation)",
-                                PRODUCT_STANDARD_SERVER_CORE_V => "Standard Server without Hyper-V (core installation)",
-                                PRODUCT_STANDARD_SERVER_V => "Standard Server without Hyper-V",
-                                PRODUCT_STARTER => "Starter",
-                                PRODUCT_STARTER_N => "Starter N",
-                                PRODUCT_STARTER_E => "Starter E",
-                                PRODUCT_STORAGE_ENTERPRISE_SERVER => "Enterprise Storage Server",
-                                PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE =>
-                                    "Enterprise Storage Server (core installation)",
-                                PRODUCT_STORAGE_EXPRESS_SERVER => "Express Storage Server",
-                                PRODUCT_STORAGE_EXPRESS_SERVER_CORE => "Express Storage Server (core installation)",
-                                PRODUCT_STORAGE_STANDARD_SERVER => "Standard Storage Server",
-                                PRODUCT_STORAGE_STANDARD_SERVER_CORE => "Standard Storage Server (core installation)",
-                                PRODUCT_STORAGE_WORKGROUP_SERVER => "Workgroup Storage Server",
-                                PRODUCT_STORAGE_WORKGROUP_SERVER_CORE => "Workgroup Storage Server (core installation)",
-                                PRODUCT_UNDEFINED => "Unknown product",
-                                PRODUCT_ULTIMATE => "Ultimate",
-                                PRODUCT_ULTIMATE_N => "Ultimate N",
-                                PRODUCT_ULTIMATE_E => "Ultimate E",
-                                PRODUCT_WEB_SERVER => "Web Server",
-                                PRODUCT_WEB_SERVER_CORE => "Web Server (core installation)",
-                                PRODUCT_CORE => "Home",
-                                PRODUCT_CORE_N => "Home N",
-                                PRODUCT_CORE_COUNTRYSPECIFIC => "Home China",
-                                PRODUCT_CORE_SINGLELANGUAGE => "Home Single Language",
-                                PRODUCT_EDUCATION => "Education",
-                                PRODUCT_EDUCATION_N => "Education N",
-                                PRODUCT_ENTERPRISE_S => "Enterprise LTSC",
-                                PRODUCT_ENTERPRISE_S_N => "Enterprise N LTSC",
-                                PRODUCT_PRO_WORKSTATION => "Pro for Workstations",
-                                PRODUCT_PRO_WORKSTATION_N => "Pro for Workstations N",
-                                PRODUCT_CLOUD => "S",
-                                PRODUCT_CLOUDN => "S N",
-                                PRODUCT_IOTENTERPRISE => "IoT Enterprise",
-                                PRODUCT_IOTENTERPRISES => "IoT Enterprise LTSC",
-                                _ => edition
-                            };
+                            edition = MapProductInfoToEdition(ed);
                         }
 
                         if (string.IsNullOrEmpty(edition))
@@ -456,7 +361,8 @@ public static partial class OsVersionInfo
 
                                 break;
                             case 10:
-                                name = ParseWindows10Version(minorVersion, productType);
+                                string label = DisplayVersion ?? ReleaseId ?? BuildVersion?.ToString() ?? "0";
+                                name = ParseWindows10Version(minorVersion, productType, BuildVersion ?? 0, label);
 
                                 break;
                         }
@@ -469,7 +375,7 @@ public static partial class OsVersionInfo
         }
     }
 
-    private static string ParseVistaThrough8(int minorVersion, byte productType)
+    internal static string ParseVistaThrough8(int minorVersion, byte productType)
     {
         switch (minorVersion)
         {
@@ -519,15 +425,12 @@ public static partial class OsVersionInfo
         return string.Empty;
     }
 
-    private static string ParseWindows10Version(int minorVersion, byte productType)
+    internal static string ParseWindows10Version(int minorVersion, byte productType, int build, string label)
     {
         if (minorVersion != 0)
         {
             return string.Empty;
         }
-
-        string label = DisplayVersion ?? ReleaseId ?? BuildVersion?.ToString() ?? "0";
-        int build = BuildVersion ?? 0;
 
         switch (productType)
         {
@@ -561,6 +464,110 @@ public static partial class OsVersionInfo
         }
 
         return string.Empty;
+    }
+
+    /// <summary>
+    ///     Maps a <c>GetProductInfo</c> product code to a display edition name.
+    /// </summary>
+    /// <returns>The edition name, or an empty string when the product code is unknown.</returns>
+    internal static string MapProductInfoToEdition(int productInfo)
+    {
+        return productInfo switch
+        {
+            PRODUCT_BUSINESS => "Business",
+            PRODUCT_BUSINESS_N => "Business N",
+            PRODUCT_CLUSTER_SERVER => "HPC Edition",
+            PRODUCT_CLUSTER_SERVER_V => "HPC Edition without Hyper-V",
+            PRODUCT_DATACENTER_SERVER => "Datacenter Server",
+            PRODUCT_DATACENTER_SERVER_CORE => "Datacenter Server (core installation)",
+            PRODUCT_DATACENTER_SERVER_V => "Datacenter Server without Hyper-V",
+            PRODUCT_DATACENTER_SERVER_CORE_V =>
+                "Datacenter Server without Hyper-V (core installation)",
+            PRODUCT_EMBEDDED => "Embedded",
+            PRODUCT_ENTERPRISE => "Enterprise",
+            PRODUCT_ENTERPRISE_N => "Enterprise N",
+            PRODUCT_ENTERPRISE_E => "Enterprise E",
+            PRODUCT_ENTERPRISE_SERVER => "Enterprise Server",
+            PRODUCT_ENTERPRISE_SERVER_CORE => "Enterprise Server (core installation)",
+            PRODUCT_ENTERPRISE_SERVER_CORE_V =>
+                "Enterprise Server without Hyper-V (core installation)",
+            PRODUCT_ENTERPRISE_SERVER_IA64 => "Enterprise Server for Itanium-based Systems",
+            PRODUCT_ENTERPRISE_SERVER_V => "Enterprise Server without Hyper-V",
+            PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT => "Essential Business Server MGMT",
+            PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL => "Essential Business Server ADDL",
+            PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC => "Essential Business Server MGMTSVC",
+            PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC => "Essential Business Server ADDLSVC",
+            PRODUCT_HOME_BASIC => "Home Basic",
+            PRODUCT_HOME_BASIC_N => "Home Basic N",
+            PRODUCT_HOME_BASIC_E => "Home Basic E",
+            PRODUCT_HOME_PREMIUM => "Home Premium",
+            PRODUCT_HOME_PREMIUM_N => "Home Premium N",
+            PRODUCT_HOME_PREMIUM_E => "Home Premium E",
+            PRODUCT_HOME_PREMIUM_SERVER => "Home Premium Server",
+            PRODUCT_HYPERV => "Microsoft Hyper-V Server",
+            PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT =>
+                "Windows Essential Business Management Server",
+            PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING =>
+                "Windows Essential Business Messaging Server",
+            PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY => "Windows Essential Business Security Server",
+            PRODUCT_PROFESSIONAL => "Professional",
+            PRODUCT_PROFESSIONAL_N => "Professional N",
+            PRODUCT_PROFESSIONAL_E => "Professional E",
+            PRODUCT_SB_SOLUTION_SERVER => "SB Solution Server",
+            PRODUCT_SB_SOLUTION_SERVER_EM => "SB Solution Server EM",
+            PRODUCT_SERVER_FOR_SB_SOLUTIONS => "Server for SB Solutions",
+            PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM => "Server for SB Solutions EM",
+            PRODUCT_SERVER_FOR_SMALLBUSINESS => "Windows Essential Server Solutions",
+            PRODUCT_SERVER_FOR_SMALLBUSINESS_V =>
+                "Windows Essential Server Solutions without Hyper-V",
+            PRODUCT_SERVER_FOUNDATION => "Server Foundation",
+            PRODUCT_SMALLBUSINESS_SERVER => "Windows Small Business Server",
+            PRODUCT_SMALLBUSINESS_SERVER_PREMIUM => "Windows Small Business Server Premium",
+            PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE =>
+                "Windows Small Business Server Premium (core installation)",
+            PRODUCT_SOLUTION_EMBEDDEDSERVER => "Solution Embedded Server",
+            PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE => "Solution Embedded Server (core installation)",
+            PRODUCT_STANDARD_SERVER => "Standard Server",
+            PRODUCT_STANDARD_SERVER_CORE => "Standard Server (core installation)",
+            PRODUCT_STANDARD_SERVER_SOLUTIONS => "Standard Server Solutions",
+            PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE =>
+                "Standard Server Solutions (core installation)",
+            PRODUCT_STANDARD_SERVER_CORE_V => "Standard Server without Hyper-V (core installation)",
+            PRODUCT_STANDARD_SERVER_V => "Standard Server without Hyper-V",
+            PRODUCT_STARTER => "Starter",
+            PRODUCT_STARTER_N => "Starter N",
+            PRODUCT_STARTER_E => "Starter E",
+            PRODUCT_STORAGE_ENTERPRISE_SERVER => "Enterprise Storage Server",
+            PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE =>
+                "Enterprise Storage Server (core installation)",
+            PRODUCT_STORAGE_EXPRESS_SERVER => "Express Storage Server",
+            PRODUCT_STORAGE_EXPRESS_SERVER_CORE => "Express Storage Server (core installation)",
+            PRODUCT_STORAGE_STANDARD_SERVER => "Standard Storage Server",
+            PRODUCT_STORAGE_STANDARD_SERVER_CORE => "Standard Storage Server (core installation)",
+            PRODUCT_STORAGE_WORKGROUP_SERVER => "Workgroup Storage Server",
+            PRODUCT_STORAGE_WORKGROUP_SERVER_CORE => "Workgroup Storage Server (core installation)",
+            PRODUCT_UNDEFINED => "Unknown product",
+            PRODUCT_ULTIMATE => "Ultimate",
+            PRODUCT_ULTIMATE_N => "Ultimate N",
+            PRODUCT_ULTIMATE_E => "Ultimate E",
+            PRODUCT_WEB_SERVER => "Web Server",
+            PRODUCT_WEB_SERVER_CORE => "Web Server (core installation)",
+            PRODUCT_CORE => "Home",
+            PRODUCT_CORE_N => "Home N",
+            PRODUCT_CORE_COUNTRYSPECIFIC => "Home China",
+            PRODUCT_CORE_SINGLELANGUAGE => "Home Single Language",
+            PRODUCT_EDUCATION => "Education",
+            PRODUCT_EDUCATION_N => "Education N",
+            PRODUCT_ENTERPRISE_S => "Enterprise LTSC",
+            PRODUCT_ENTERPRISE_S_N => "Enterprise N LTSC",
+            PRODUCT_PRO_WORKSTATION => "Pro for Workstations",
+            PRODUCT_PRO_WORKSTATION_N => "Pro for Workstations N",
+            PRODUCT_CLOUD => "S",
+            PRODUCT_CLOUDN => "S N",
+            PRODUCT_IOTENTERPRISE => "IoT Enterprise",
+            PRODUCT_IOTENTERPRISES => "IoT Enterprise LTSC",
+            _ => string.Empty
+        };
     }
 
     #endregion NAME

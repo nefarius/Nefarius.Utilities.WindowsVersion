@@ -22,3 +22,34 @@ jobs:
 
       - name: Build
         run: dotnet build -c Release
+
+  test-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup .Net SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6
+        with:
+          dotnet-version: 10.x
+
+      - name: Test Unit and CI suites
+        run: >
+          dotnet test Tests/Tests.csproj -c Release
+          --settings Tests/ci.runsettings
+          --filter "Category=Unit|Category=CI"
+          --logger "trx;LogFileName=test-results.trx"
+          --collect:"XPlat Code Coverage"
+          --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: test-results-windows
+          path: TestResults/

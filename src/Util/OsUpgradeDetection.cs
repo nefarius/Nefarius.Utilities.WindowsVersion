@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -34,19 +35,28 @@ public static class OsUpgradeDetection
                 return false;
             }
 
-            foreach (string sosKeyName in setupKey.GetSubKeyNames().Where(v =>
-                         v.StartsWith("Source OS", StringComparison.InvariantCultureIgnoreCase)))
+            return HasSourceOsUpgrade(setupKey.GetSubKeyNames(), sosKeyName =>
             {
                 using RegistryKey? sosKey = setupKey.OpenSubKey(sosKeyName);
-                string? productName = sosKey?.GetValue("ProductName") as string;
-
-                if (!string.IsNullOrEmpty(productName))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+                return sosKey?.GetValue("ProductName") as string;
+            });
         }
+    }
+
+    /// <summary>
+    ///     True when a <c>Source OS*</c> setup subkey reports a non-empty ProductName.
+    /// </summary>
+    internal static bool HasSourceOsUpgrade(IEnumerable<string> subKeyNames, Func<string, string?> getProductName)
+    {
+        foreach (string sosKeyName in subKeyNames.Where(v =>
+                     v.StartsWith("Source OS", StringComparison.InvariantCultureIgnoreCase)))
+        {
+            if (!string.IsNullOrEmpty(getProductName(sosKeyName)))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

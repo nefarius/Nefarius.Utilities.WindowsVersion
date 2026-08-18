@@ -23,6 +23,10 @@ Utility classes to get detailed Windows version and some extras like UEFI and BC
 - Check Code Integrity (CI) settings
 - ...and contributions welcome!
 
+## Testing
+
+See [TESTING.md](TESTING.md) for Unit/CI filters, admin prerequisites, and how tests run in GitHub Actions.
+
 ## Documentation
 
 [API documentation](https://github.com/nefarius/Nefarius.Utilities.WindowsVersion/blob/master/docs/index.md).
