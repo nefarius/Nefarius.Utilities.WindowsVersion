@@ -15,6 +15,7 @@
     <!-- Common solution settings -->
     <OutputPath>$(SolutionDir)bin\</OutputPath>
     <LangVersion>latest</LangVersion>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
     <!-- Docs and symbols generation -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
