@@ -33,14 +33,14 @@ jobs:
         run: dotnet pack -c Release
 
       - name: NuGet login (OIDC to temp API key)
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: login
         with:
           user: Nefarius
 
       - name: Publish To Nuget
         run: |
-          dotnet nuget push bin/*.nupkg --skip-duplicate -k "$NUGET_AUTH_TOKEN" -s https://api.nuget.org/v3/index.json
-          dotnet nuget push bin/*.snupkg --skip-duplicate -k "$NUGET_AUTH_TOKEN" -s https://api.nuget.org/v3/index.json
+          dotnet nuget push bin/*.nupkg --skip-duplicate -s https://api.nuget.org/v3/index.json
+          dotnet nuget push bin/*.snupkg --skip-duplicate -s https://api.nuget.org/v3/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{ steps.login.outputs.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
